@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSIS to Fabric Migration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Company Logo" class="logo">
+    </div>
+    <div class="container">
+        <h1>Migrate SSIS to Microsoft Fabric</h1>
+        <form id="migrationForm" action="/migrate" method="POST" enctype="multipart/form-data">
+            <label for="dtsxFile">DTSX File:</label>
+            <input type="file" id="dtsxFile" name="dtsxFile" required>
+
+            <label for="workspaceName">Workspace Name:</label>
+            <input type="text" id="workspaceName" name="workspaceName" required>
+
+            <label for="LakehouseName">Lakehouse Name:</label>
+            <input type="text" id="LakehouseName" name="LakehouseName">
+
+            <label for="pipelineName">Pipeline Name:</label>
+            <input type="text" id="pipelineName" name="pipelineName" required>  
+
+            <label for="WarehouseName">Warehouse Name:</label>
+            <input type="text" id="WarehouseName" name="WarehouseName">          
+
+            <label for="endpoint">Connection Endpoint(for warehouse):</label>
+            <input type="text" id="endpoint" name="endpoint">
+
+            <button type="submit">Migrate</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
