@@ -371,18 +371,22 @@ def create_json_lookup(pipeline_name, source, workspace_id, lakehouse_id, wareho
 
 
 def create_procedure_fabric(server, database, sql_query):
-    driver = 'ODBC Driver 17 for SQL Server'
-    user = 'vivek.goli%40kanerika.com'
-    # use %40 inplace of @
-    pass1 = 'Vivek%4016'
+    user = "vivek.goli@kanerika.com"
+    password = "Vivek@16"
+    conn_str = (
+        "DRIVER={ODBC Driver 17 for SQL Server};"
+        f"SERVER={server};"
+        f"DATABASE={database};"
+        "Authentication=ActiveDirectoryPassword;"
+        f"UID={user};"
+        f"PWD={password}"
+    )
 
-    connection_string = f'mssql+pyodbc://{user}:{pass1}@{server}/{database}?driver={driver}&Trusted_Connection=no&Authentication=ActiveDirectoryPassword'
-    engine = sa.create_engine(connection_string, echo=True, connect_args={'autocommit':True}, fast_executemany=True)
-
-    # Execute the command to create the stored procedure
-    with engine.connect() as connection:
-        connection.execute(sa.text(sql_query))
-        print("Stored procedure created successfully.")
+    with pyodbc.connect(conn_str) as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(sql_query)
+            conn.commit()
+            print("Stored procedure created successfully.")
 
 def create_join_procedure(procedure_name, destination_table, query):
     return f"""
