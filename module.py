@@ -9,7 +9,6 @@ import pandas as pd
 import sqlalchemy as sa
 import pyodbc
 
-
 def parse_ssis(filepath):
     tree = etree.parse(filepath)
     namespaces = {'DTS': 'www.microsoft.com/SqlServer/Dts', 'SQLTask': 'www.microsoft.com/sqlserver/dts/tasks/sqltask'}
@@ -18,7 +17,7 @@ def parse_ssis(filepath):
     sql_task = tree.xpath("//DTS:Executable[@DTS:ExecutableType='Microsoft.ExecuteSQLTask']/@DTS:ObjectName", namespaces=namespaces)
     if merges:
         print(merges)
-        return 'merge'
+        return 'merge-join'
     elif lookups:
         print(lookups)
         return 'lookup'
@@ -371,6 +370,7 @@ def create_json_lookup(pipeline_name, source, workspace_id, lakehouse_id, wareho
 
 
 def create_procedure_fabric(server, database, sql_query):
+    print(f"Creating a procedure in {database}")
     user = "vivek.goli@kanerika.com"
     password = "Vivek@16"
     conn_str = (

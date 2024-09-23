@@ -1,0 +1,2504 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="9/23/2024 11:46:12 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="INT202411-VIVEK"
+  DTS:CreatorName="AzureAD\VenkataVivekGoli"
+  DTS:DTSID="{85991F9F-8398-4D73-AE5C-2A089BF4CC91}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5556.0"
+  DTS:LocaleID="16393"
+  DTS:ObjectName="Package"
+  DTS:PackageType="5"
+  DTS:VersionBuild="6"
+  DTS:VersionGUID="{961279ED-2C2F-41D7-9FAA-01C482DDE8C6}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[ssis-deepak.database.windows.net.ssis.manideepak]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{18E07CB0-9B93-4125-8CE5-54530A8FB8BF}"
+      DTS:ObjectName="ssis-deepak.database.windows.net.ssis.manideepak">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=ssis-deepak.database.windows.net;User ID=manideepak;Initial Catalog=ssis;Provider=SQLOLEDB.1;Persist Security Info=True;Application Name=SSIS-Package-{18E07CB0-9B93-4125-8CE5-54530A8FB8BF}ssis-deepak.database.windows.net.ssis.manideepak;Auto Translate=False;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAXsul/EYnW0Wf/N5HMqLsjgAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAABRA26RugSgK6JGZ+dkWK9axuW9D5eq7zfDqfmEU8u22AAAAAAOgAAAAAIAACAAAABeZ0f1MXyL8RYzgmsMFEMrC+D7w7u4s/QRPhUp/rJe0iAAAADqhvgZVw2n9d6C5hlcZZtBlCpqHyb6KS6ZRqXr69lvIkAAAABGe/cG97yrqNq40gN8kq41tH0mBGcZkLGDR1UC8bJS5pz7/NmY1hsPuBTaL2UbrNSQB170l6lntBfkI4pnHltY</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Star Based Dataflow"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{3BED0214-E6FB-412B-8198-FF7AC2C29745}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Star Based Dataflow"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Star Based Dataflow\Merge Join"
+              componentClassID="Microsoft.MergeJoin"
+              contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+              name="Merge Join"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of join to perform."
+                  name="JoinType"
+                  typeConverter="JoinType">2</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the number of columns in the ordering key."
+                  name="NumKeyColumns">1</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the null values are treated as equal values."
+                  name="TreatNullsAsEqual">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Indicates the requested maximum buffers per input before blocking."
+                  name="MaxBuffersPerInput">5</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Left Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Left Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Left Input].Columns[Dealer_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Dealer_ID"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\Star Based Dataflow\Sort.Outputs[Sort Output].Columns[Dealer_ID]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Left Input].Columns[Model_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Model_ID"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\Star Based Dataflow\Sort.Outputs[Sort Output].Columns[Model_ID]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Left Input].Columns[Branch_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Branch_ID"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\Star Based Dataflow\Sort.Outputs[Sort Output].Columns[Branch_ID]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Left Input].Columns[Date_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Date_ID"
+                      lineageId="Package\Star Based Dataflow\Sort.Outputs[Sort Output].Columns[Date_ID]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Left Input].Columns[Units_Sold]"
+                      cachedDataType="i4"
+                      cachedName="Units_Sold"
+                      lineageId="Package\Star Based Dataflow\Sort.Outputs[Sort Output].Columns[Units_Sold]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Left Input].Columns[Revenue]"
+                      cachedDataType="i4"
+                      cachedName="Revenue"
+                      lineageId="Package\Star Based Dataflow\Sort.Outputs[Sort Output].Columns[Revenue]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Right Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Right Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Right Input].Columns[Dealer_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Dealer_ID"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output].Columns[Dealer_ID]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Right Input].Columns[Location_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Location_ID"
+                      cachedSortKeyPosition="3"
+                      lineageId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output].Columns[Location_ID]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Right Input].Columns[Country_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Country_ID"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output].Columns[Country_ID]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Right Input].Columns[Dealer_NM]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="Dealer_NM"
+                      lineageId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output].Columns[Dealer_NM]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Right Input].Columns[Location_NM]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Location_NM"
+                      lineageId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output].Columns[Location_NM]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Right Input].Columns[Country_Name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Country_Name"
+                      lineageId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output].Columns[Country_Name]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output]"
+                  isSorted="true"
+                  name="Merge Join Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Dealer_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Dealer_ID]"
+                      name="Dealer_ID"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Left Input].Columns[Dealer_ID]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Branch_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Branch_ID]"
+                      name="Branch_ID">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Left Input].Columns[Branch_ID]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Date_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Date_ID]"
+                      name="Date_ID">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Left Input].Columns[Date_ID]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Units_Sold]"
+                      dataType="i4"
+                      lineageId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Units_Sold]"
+                      name="Units_Sold">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Left Input].Columns[Units_Sold]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Revenue]"
+                      dataType="i4"
+                      lineageId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Revenue]"
+                      name="Revenue">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Left Input].Columns[Revenue]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Dealer_NM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Dealer_NM]"
+                      name="Dealer_NM">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Right Input].Columns[Dealer_NM]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Location_NM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Location_NM]"
+                      name="Location_NM">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Right Input].Columns[Location_NM]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Country_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Country_Name]"
+                      name="Country_Name">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Right Input].Columns[Country_Name]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Star Based Dataflow\Merge Join 1"
+              componentClassID="Microsoft.MergeJoin"
+              contactInfo="Merge Join;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Combine two sorted data flows into one using the FULL, LEFT, or INNER join. We recommend this transformation when data flows can be sorted at their sources."
+              name="Merge Join 1"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of join to perform."
+                  name="JoinType"
+                  typeConverter="JoinType">2</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the number of columns in the ordering key."
+                  name="NumKeyColumns">1</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the null values are treated as equal values."
+                  name="TreatNullsAsEqual">true</property>
+                <property
+                  dataType="System.Int32"
+                  description="Indicates the requested maximum buffers per input before blocking."
+                  name="MaxBuffersPerInput">5</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\Star Based Dataflow\Merge Join 1.Inputs[Merge Join Left Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Left Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Merge Join 1.Inputs[Merge Join Left Input].Columns[Location_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Location_ID"
+                      cachedSortKeyPosition="2"
+                      lineageId="Package\Star Based Dataflow\Sort 1.Outputs[Sort Output].Columns[Location_ID]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Merge Join 1.Inputs[Merge Join Left Input].Columns[Country_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Country_ID"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\Star Based Dataflow\Sort 1.Outputs[Sort Output].Columns[Country_ID]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Merge Join 1.Inputs[Merge Join Left Input].Columns[Dealer_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Dealer_ID"
+                      lineageId="Package\Star Based Dataflow\Sort 1.Outputs[Sort Output].Columns[Dealer_ID]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Merge Join 1.Inputs[Merge Join Left Input].Columns[Dealer_NM]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="Dealer_NM"
+                      lineageId="Package\Star Based Dataflow\Sort 1.Outputs[Sort Output].Columns[Dealer_NM]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Merge Join 1.Inputs[Merge Join Left Input].Columns[Location_NM]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Location_NM"
+                      lineageId="Package\Star Based Dataflow\Sort 1.Outputs[Sort Output].Columns[Location_NM]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+                <input
+                  refId="Package\Star Based Dataflow\Merge Join 1.Inputs[Merge Join Right Input]"
+                  hasSideEffects="true"
+                  name="Merge Join Right Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Merge Join 1.Inputs[Merge Join Right Input].Columns[Country_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Country_ID"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\Star Based Dataflow\Sort 2.Outputs[Sort Output].Columns[Country_ID]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Merge Join 1.Inputs[Merge Join Right Input].Columns[Country_Name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Country_Name"
+                      lineageId="Package\Star Based Dataflow\Sort 2.Outputs[Sort Output].Columns[Country_Name]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output]"
+                  isSorted="true"
+                  name="Merge Join Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Dealer_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Dealer_ID]"
+                      name="Dealer_ID">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Star Based Dataflow\Merge Join 1.Inputs[Merge Join Left Input].Columns[Dealer_ID]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Dealer_NM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Dealer_NM]"
+                      name="Dealer_NM">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Star Based Dataflow\Merge Join 1.Inputs[Merge Join Left Input].Columns[Dealer_NM]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Location_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Location_ID]"
+                      name="Location_ID">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Star Based Dataflow\Merge Join 1.Inputs[Merge Join Left Input].Columns[Location_ID]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Location_NM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Location_NM]"
+                      name="Location_NM">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Star Based Dataflow\Merge Join 1.Inputs[Merge Join Left Input].Columns[Location_NM]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Country_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Country_ID]"
+                      name="Country_ID"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Star Based Dataflow\Merge Join 1.Inputs[Merge Join Left Input].Columns[Country_ID]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Country_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Country_Name]"
+                      name="Country_Name">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="The input column associated with this output column"
+                          name="InputColumnID">#{Package\Star Based Dataflow\Merge Join 1.Inputs[Merge Join Right Input].Columns[Country_Name]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Star Based Dataflow\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[revenue_dealer_merged]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Star Based Dataflow\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[ssis-deepak.database.windows.net.ssis.manideepak]"
+                  connectionManagerRefId="Package.ConnectionManagers[ssis-deepak.database.windows.net.ssis.manideepak]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Dealer_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Dealer_ID"
+                      cachedSortKeyPosition="1"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Dealer_ID]"
+                      lineageId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Dealer_ID]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Branch_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Branch_ID"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Branch_ID]"
+                      lineageId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Branch_ID]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Date_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Date_ID"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Date_ID]"
+                      lineageId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Date_ID]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Units_Sold]"
+                      cachedDataType="i4"
+                      cachedName="Units_Sold"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Units_Sold]"
+                      lineageId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Units_Sold]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Revenue]"
+                      cachedDataType="i4"
+                      cachedName="Revenue"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Revenue]"
+                      lineageId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Revenue]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Dealer_NM]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="Dealer_NM"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Dealer_NM]"
+                      lineageId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Dealer_NM]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Location_NM]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Location_NM"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Location_NM]"
+                      lineageId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Location_NM]" />
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Country_Name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Country_Name"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Country_Name]"
+                      lineageId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output].Columns[Country_Name]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Dealer_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="Dealer_ID" />
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Branch_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="Branch_ID" />
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Date_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="Date_ID" />
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Units_Sold]"
+                      dataType="i4"
+                      name="Units_Sold" />
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Revenue]"
+                      dataType="i4"
+                      name="Revenue" />
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Dealer_NM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="Dealer_NM" />
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Location_NM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Location_NM" />
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Country_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Country_Name" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Star Based Dataflow\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Star Based Dataflow\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Star Based Dataflow\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Star Based Dataflow\OLE DB Source"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="OLE DB Source"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[Revenue]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Star Based Dataflow\OLE DB Source.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[ssis-deepak.database.windows.net.ssis.manideepak]"
+                  connectionManagerRefId="Package.ConnectionManagers[ssis-deepak.database.windows.net.ssis.manideepak]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Dealer_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Dealer_ID]"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Dealer_ID]"
+                      name="Dealer_ID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Model_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Model_ID]"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Model_ID]"
+                      name="Model_ID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Branch_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Branch_ID]"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Branch_ID]"
+                      name="Branch_ID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Date_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Date_ID]"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Date_ID]"
+                      name="Date_ID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Units_Sold]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Units_Sold]"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Units_Sold]"
+                      name="Units_Sold"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Revenue]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Revenue]"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Revenue]"
+                      name="Revenue"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Dealer_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="Dealer_ID" />
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Model_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="Model_ID" />
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Branch_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="Branch_ID" />
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Date_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="Date_ID" />
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Units_Sold]"
+                      dataType="i4"
+                      name="Units_Sold" />
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[Revenue]"
+                      dataType="i4"
+                      name="Revenue" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Dealer_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Dealer_ID]"
+                      name="Dealer_ID" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Model_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Model_ID]"
+                      name="Model_ID" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Branch_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Branch_ID]"
+                      name="Branch_ID" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Date_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Date_ID]"
+                      name="Date_ID" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Units_Sold]"
+                      dataType="i4"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Units_Sold]"
+                      name="Units_Sold" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Revenue]"
+                      dataType="i4"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[Revenue]"
+                      name="Revenue" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Star Based Dataflow\OLE DB Source 1"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="OLE DB Source 1"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[Dealer]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Star Based Dataflow\OLE DB Source 1.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[ssis-deepak.database.windows.net.ssis.manideepak]"
+                  connectionManagerRefId="Package.ConnectionManagers[ssis-deepak.database.windows.net.ssis.manideepak]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Dealer_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].ExternalColumns[Dealer_ID]"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Dealer_ID]"
+                      name="Dealer_ID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Dealer_NM]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].ExternalColumns[Dealer_NM]"
+                      length="100"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Dealer_NM]"
+                      name="Dealer_NM"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Location_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].ExternalColumns[Location_ID]"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Location_ID]"
+                      name="Location_ID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Location_NM]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].ExternalColumns[Location_NM]"
+                      length="50"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Location_NM]"
+                      name="Location_NM"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Country_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].ExternalColumns[Country_ID]"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Country_ID]"
+                      name="Country_ID"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].ExternalColumns[Dealer_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="Dealer_ID" />
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].ExternalColumns[Dealer_NM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="Dealer_NM" />
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].ExternalColumns[Location_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="Location_ID" />
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].ExternalColumns[Location_NM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Location_NM" />
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].ExternalColumns[Country_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="Country_ID" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Error Output].Columns[Dealer_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Error Output].Columns[Dealer_ID]"
+                      name="Dealer_ID" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Error Output].Columns[Dealer_NM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Error Output].Columns[Dealer_NM]"
+                      name="Dealer_NM" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Error Output].Columns[Location_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Error Output].Columns[Location_ID]"
+                      name="Location_ID" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Error Output].Columns[Location_NM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Error Output].Columns[Location_NM]"
+                      name="Location_NM" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Error Output].Columns[Country_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Error Output].Columns[Country_ID]"
+                      name="Country_ID" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Star Based Dataflow\OLE DB Source 2"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="OLE DB Source 2"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[Country]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Star Based Dataflow\OLE DB Source 2.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[ssis-deepak.database.windows.net.ssis.manideepak]"
+                  connectionManagerRefId="Package.ConnectionManagers[ssis-deepak.database.windows.net.ssis.manideepak]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Output].Columns[Country_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Output].ExternalColumns[Country_ID]"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Output].Columns[Country_ID]"
+                      name="Country_ID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Output].Columns[Country_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Output].ExternalColumns[Country_Name]"
+                      length="50"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Output].Columns[Country_Name]"
+                      name="Country_Name"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Output].ExternalColumns[Country_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      name="Country_ID" />
+                    <externalMetadataColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Output].ExternalColumns[Country_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      name="Country_Name" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Error Output].Columns[Country_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Error Output].Columns[Country_ID]"
+                      name="Country_ID" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Error Output].Columns[Country_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Error Output].Columns[Country_Name]"
+                      name="Country_Name" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Star Based Dataflow\Sort"
+              componentClassID="Microsoft.Sort"
+              contactInfo="Sort;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Sorts input data in ascending or descending order when it cannot be sorted at its source. For example, sort sales data by 'customer id' before it is written to a flat file and delivered to another department. Note: We do not recommend this transformation for large data flows."
+              name="Sort"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the Sort transformation removes rows with duplicate sort values."
+                  name="EliminateDuplicates">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the maximum number of threads to use for sorting."
+                  expressionType="Notify"
+                  name="MaximumThreads">-1</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\Star Based Dataflow\Sort.Inputs[Sort Input]"
+                  name="Sort Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Sort.Inputs[Sort Input].Columns[Dealer_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Dealer_ID"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Dealer_ID]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">1</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Sort.Inputs[Sort Input].Columns[Model_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Model_ID"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Model_ID]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">3</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Sort.Inputs[Sort Input].Columns[Branch_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Branch_ID"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Branch_ID]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">2</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Sort.Inputs[Sort Input].Columns[Date_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Date_ID"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Date_ID]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Sort.Inputs[Sort Input].Columns[Units_Sold]"
+                      cachedDataType="i4"
+                      cachedName="Units_Sold"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Units_Sold]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Sort.Inputs[Sort Input].Columns[Revenue]"
+                      cachedDataType="i4"
+                      cachedName="Revenue"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Revenue]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Star Based Dataflow\Sort.Outputs[Sort Output]"
+                  isSorted="true"
+                  name="Sort Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Sort.Outputs[Sort Output].Columns[Dealer_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\Sort.Outputs[Sort Output].Columns[Dealer_ID]"
+                      name="Dealer_ID"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Dealer_ID]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Sort.Outputs[Sort Output].Columns[Model_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\Sort.Outputs[Sort Output].Columns[Model_ID]"
+                      name="Model_ID"
+                      sortKeyPosition="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Model_ID]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Sort.Outputs[Sort Output].Columns[Branch_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\Sort.Outputs[Sort Output].Columns[Branch_ID]"
+                      name="Branch_ID"
+                      sortKeyPosition="2">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Branch_ID]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Sort.Outputs[Sort Output].Columns[Date_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\Sort.Outputs[Sort Output].Columns[Date_ID]"
+                      name="Date_ID">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Date_ID]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Sort.Outputs[Sort Output].Columns[Units_Sold]"
+                      dataType="i4"
+                      lineageId="Package\Star Based Dataflow\Sort.Outputs[Sort Output].Columns[Units_Sold]"
+                      name="Units_Sold">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Units_Sold]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Sort.Outputs[Sort Output].Columns[Revenue]"
+                      dataType="i4"
+                      lineageId="Package\Star Based Dataflow\Sort.Outputs[Sort Output].Columns[Revenue]"
+                      name="Revenue">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output].Columns[Revenue]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Star Based Dataflow\Sort 1"
+              componentClassID="Microsoft.Sort"
+              contactInfo="Sort;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Sorts input data in ascending or descending order when it cannot be sorted at its source. For example, sort sales data by 'customer id' before it is written to a flat file and delivered to another department. Note: We do not recommend this transformation for large data flows."
+              name="Sort 1"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the Sort transformation removes rows with duplicate sort values."
+                  name="EliminateDuplicates">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the maximum number of threads to use for sorting."
+                  expressionType="Notify"
+                  name="MaximumThreads">-1</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\Star Based Dataflow\Sort 1.Inputs[Sort Input]"
+                  name="Sort Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Sort 1.Inputs[Sort Input].Columns[Dealer_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Dealer_ID"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Dealer_ID]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Sort 1.Inputs[Sort Input].Columns[Dealer_NM]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="Dealer_NM"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Dealer_NM]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Sort 1.Inputs[Sort Input].Columns[Location_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Location_ID"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Location_ID]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">2</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Sort 1.Inputs[Sort Input].Columns[Location_NM]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Location_NM"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Location_NM]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Sort 1.Inputs[Sort Input].Columns[Country_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Country_ID"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Country_ID]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">1</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Star Based Dataflow\Sort 1.Outputs[Sort Output]"
+                  isSorted="true"
+                  name="Sort Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Sort 1.Outputs[Sort Output].Columns[Dealer_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\Sort 1.Outputs[Sort Output].Columns[Dealer_ID]"
+                      name="Dealer_ID">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Dealer_ID]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Sort 1.Outputs[Sort Output].Columns[Dealer_NM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\Star Based Dataflow\Sort 1.Outputs[Sort Output].Columns[Dealer_NM]"
+                      name="Dealer_NM">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Dealer_NM]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Sort 1.Outputs[Sort Output].Columns[Location_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\Sort 1.Outputs[Sort Output].Columns[Location_ID]"
+                      name="Location_ID"
+                      sortKeyPosition="2">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Location_ID]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Sort 1.Outputs[Sort Output].Columns[Location_NM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Star Based Dataflow\Sort 1.Outputs[Sort Output].Columns[Location_NM]"
+                      name="Location_NM">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Location_NM]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Sort 1.Outputs[Sort Output].Columns[Country_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\Sort 1.Outputs[Sort Output].Columns[Country_ID]"
+                      name="Country_ID"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output].Columns[Country_ID]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Star Based Dataflow\Sort 2"
+              componentClassID="Microsoft.Sort"
+              contactInfo="Sort;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Sorts input data in ascending or descending order when it cannot be sorted at its source. For example, sort sales data by 'customer id' before it is written to a flat file and delivered to another department. Note: We do not recommend this transformation for large data flows."
+              name="Sort 2"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the Sort transformation removes rows with duplicate sort values."
+                  name="EliminateDuplicates">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the maximum number of threads to use for sorting."
+                  expressionType="Notify"
+                  name="MaximumThreads">-1</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\Star Based Dataflow\Sort 2.Inputs[Sort Input]"
+                  name="Sort Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Sort 2.Inputs[Sort Input].Columns[Country_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Country_ID"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Output].Columns[Country_ID]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">1</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Sort 2.Inputs[Sort Input].Columns[Country_Name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Country_Name"
+                      lineageId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Output].Columns[Country_Name]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Star Based Dataflow\Sort 2.Outputs[Sort Output]"
+                  isSorted="true"
+                  name="Sort Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Sort 2.Outputs[Sort Output].Columns[Country_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\Sort 2.Outputs[Sort Output].Columns[Country_ID]"
+                      name="Country_ID"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Output].Columns[Country_ID]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Sort 2.Outputs[Sort Output].Columns[Country_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Star Based Dataflow\Sort 2.Outputs[Sort Output].Columns[Country_Name]"
+                      name="Country_Name">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Output].Columns[Country_Name]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Star Based Dataflow\Sort 3"
+              componentClassID="Microsoft.Sort"
+              contactInfo="Sort;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="Sorts input data in ascending or descending order when it cannot be sorted at its source. For example, sort sales data by 'customer id' before it is written to a flat file and delivered to another department. Note: We do not recommend this transformation for large data flows."
+              name="Sort 3"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the Sort transformation removes rows with duplicate sort values."
+                  name="EliminateDuplicates">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the maximum number of threads to use for sorting."
+                  expressionType="Notify"
+                  name="MaximumThreads">-1</property>
+              </properties>
+              <inputs>
+                <input
+                  refId="Package\Star Based Dataflow\Sort 3.Inputs[Sort Input]"
+                  name="Sort Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Sort 3.Inputs[Sort Input].Columns[Dealer_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Dealer_ID"
+                      lineageId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Dealer_ID]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">1</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Sort 3.Inputs[Sort Input].Columns[Dealer_NM]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="Dealer_NM"
+                      lineageId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Dealer_NM]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Sort 3.Inputs[Sort Input].Columns[Location_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Location_ID"
+                      lineageId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Location_ID]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">3</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Sort 3.Inputs[Sort Input].Columns[Location_NM]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Location_NM"
+                      lineageId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Location_NM]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Sort 3.Inputs[Sort Input].Columns[Country_ID]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="20"
+                      cachedName="Country_ID"
+                      cachedSortKeyPosition="1"
+                      lineageId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Country_ID]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">2</property>
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Star Based Dataflow\Sort 3.Inputs[Sort Input].Columns[Country_Name]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="50"
+                      cachedName="Country_Name"
+                      lineageId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Country_Name]">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the comparison options for character data."
+                          name="NewComparisonFlags">0</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the sort order of the column."
+                          name="NewSortKeyPosition">0</property>
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output]"
+                  isSorted="true"
+                  name="Sort Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output].Columns[Dealer_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output].Columns[Dealer_ID]"
+                      name="Dealer_ID"
+                      sortKeyPosition="1">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Dealer_ID]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output].Columns[Dealer_NM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output].Columns[Dealer_NM]"
+                      name="Dealer_NM">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Dealer_NM]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output].Columns[Location_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output].Columns[Location_ID]"
+                      name="Location_ID"
+                      sortKeyPosition="3">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Location_ID]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output].Columns[Location_NM]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output].Columns[Location_NM]"
+                      name="Location_NM">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Location_NM]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output].Columns[Country_ID]"
+                      codePage="1252"
+                      dataType="str"
+                      length="20"
+                      lineageId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output].Columns[Country_ID]"
+                      name="Country_ID"
+                      sortKeyPosition="2">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Country_ID]}</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output].Columns[Country_Name]"
+                      codePage="1252"
+                      dataType="str"
+                      length="50"
+                      lineageId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output].Columns[Country_Name]"
+                      name="Country_Name">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the lineage identifier of the input column that is associated with this output column."
+                          name="SortColumnId">#{Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output].Columns[Country_Name]}</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Star Based Dataflow.Paths[Merge Join Output]"
+              endId="Package\Star Based Dataflow\Sort 3.Inputs[Sort Input]"
+              name="Merge Join Output"
+              startId="Package\Star Based Dataflow\Merge Join 1.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\Star Based Dataflow.Paths[Merge Join Output1]"
+              endId="Package\Star Based Dataflow\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Merge Join Output"
+              startId="Package\Star Based Dataflow\Merge Join.Outputs[Merge Join Output]" />
+            <path
+              refId="Package\Star Based Dataflow.Paths[OLE DB Source Output]"
+              endId="Package\Star Based Dataflow\Sort.Inputs[Sort Input]"
+              name="OLE DB Source Output"
+              startId="Package\Star Based Dataflow\OLE DB Source.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Star Based Dataflow.Paths[OLE DB Source Output1]"
+              endId="Package\Star Based Dataflow\Sort 1.Inputs[Sort Input]"
+              name="OLE DB Source Output"
+              startId="Package\Star Based Dataflow\OLE DB Source 1.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Star Based Dataflow.Paths[OLE DB Source Output2]"
+              endId="Package\Star Based Dataflow\Sort 2.Inputs[Sort Input]"
+              name="OLE DB Source Output"
+              startId="Package\Star Based Dataflow\OLE DB Source 2.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Star Based Dataflow.Paths[Sort Output]"
+              endId="Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Left Input]"
+              name="Sort Output"
+              startId="Package\Star Based Dataflow\Sort.Outputs[Sort Output]" />
+            <path
+              refId="Package\Star Based Dataflow.Paths[Sort Output1]"
+              endId="Package\Star Based Dataflow\Merge Join 1.Inputs[Merge Join Left Input]"
+              name="Sort Output"
+              startId="Package\Star Based Dataflow\Sort 1.Outputs[Sort Output]" />
+            <path
+              refId="Package\Star Based Dataflow.Paths[Sort Output2]"
+              endId="Package\Star Based Dataflow\Merge Join 1.Inputs[Merge Join Right Input]"
+              name="Sort Output"
+              startId="Package\Star Based Dataflow\Sort 2.Outputs[Sort Output]" />
+            <path
+              refId="Package\Star Based Dataflow.Paths[Sort Output3]"
+              endId="Package\Star Based Dataflow\Merge Join.Inputs[Merge Join Right Input]"
+              name="Sort Output"
+              startId="Package\Star Based Dataflow\Sort 3.Outputs[Sort Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout
+          Size="174.666666666667,42.6666666666667"
+          Id="Package\Star Based Dataflow"
+          TopLeft="138.124993825332,72.7999965286256" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Star Based Dataflow">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="150.666666666667,42.6666666666667"
+          Id="Package\Star Based Dataflow\OLE DB Source"
+          TopLeft="84.3749962281437,34.4499983572961" />
+        <NodeLayout
+          Size="160,42.6666666666667"
+          Id="Package\Star Based Dataflow\OLE DB Source 1"
+          TopLeft="260.624988349155,38.3499981713296" />
+        <NodeLayout
+          Size="160,42.6666666666667"
+          Id="Package\Star Based Dataflow\OLE DB Source 2"
+          TopLeft="449.374979911373,37.0499982333184" />
+        <NodeLayout
+          Size="98.6666666666667,42.6666666666667"
+          Id="Package\Star Based Dataflow\Sort"
+          TopLeft="108.624995389953,132.249993956089" />
+        <NodeLayout
+          Size="108,42.6666666666667"
+          Id="Package\Star Based Dataflow\Sort 1"
+          TopLeft="283.749987315387,124.799994049073" />
+        <EdgeLayout
+          Id="Package\Star Based Dataflow.Paths[OLE DB Source Output]"
+          TopLeft="158.833329142382,77.1166650239627">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,55.1333289321265"
+              Start="0,0"
+              End="0,47.6333289321265">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,47.6333289321265" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Star Based Dataflow.Paths[OLE DB Source Output1]"
+          TopLeft="339.187487832271,81.0166648379962">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,43.7833292110763"
+              Start="0,0"
+              End="0,36.2833292110763">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,36.2833292110763" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="108,42.6666666666667"
+          Id="Package\Star Based Dataflow\Sort 2"
+          TopLeft="459.249981056899,127.799995598793" />
+        <EdgeLayout
+          Id="Package\Star Based Dataflow.Paths[OLE DB Source Output2]"
+          TopLeft="529.374979911373,79.7166648999851">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-16.1249988544731,48.0833306988082"
+              Start="0,0"
+              End="-16.1249988544731,40.5833306988082">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,20.0416653494041" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,20.0416653494041"
+                    Point2="0,24.0416653494041"
+                    Point3="-4,24.0416653494041" />
+                  <mssgle:LineSegment
+                    End="-12.1249988544731,24.0416653494041" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-12.1249988544731,24.0416653494041"
+                    Point2="-16.1249988544731,24.0416653494041"
+                    Point3="-16.1249988544731,28.0416653494041" />
+                  <mssgle:LineSegment
+                    End="-16.1249988544731,40.5833306988082" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="131.333333333334,42.6666666666667"
+          Id="Package\Star Based Dataflow\Merge Join"
+          TopLeft="260.624988349155,391.299981341362" />
+        <EdgeLayout
+          Id="Package\Star Based Dataflow.Paths[Sort Output]"
+          TopLeft="157.958328723287,174.916660622756">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="147.777770736979,216.383320718607"
+              Start="0,0"
+              End="147.777770736979,208.883320718607">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,124.267344578432" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,124.267344578432"
+                    Point2="0,128.267344578432"
+                    Point3="4,128.267344578432" />
+                  <mssgle:LineSegment
+                    End="143.777770736979,128.267344578432" />
+                  <mssgle:CubicBezierSegment
+                    Point1="143.777770736979,128.267344578432"
+                    Point2="147.777770736979,128.267344578432"
+                    Point3="147.777770736979,132.267344578432" />
+                  <mssgle:LineSegment
+                    End="147.777770736979,208.883320718607" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="140,42.6666666666667"
+          Id="Package\Star Based Dataflow\Merge Join 1"
+          TopLeft="386.87498270534,234.099991507531" />
+        <EdgeLayout
+          Id="Package\Star Based Dataflow.Paths[Sort Output1]"
+          TopLeft="337.749987315387,167.466660715739">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="119.124995389953,66.6333307917913"
+              Start="0,0"
+              End="119.124995389953,59.1333307917913">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,29.3166653958957" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,29.3166653958957"
+                    Point2="0,33.3166653958957"
+                    Point3="4,33.3166653958957" />
+                  <mssgle:LineSegment
+                    End="115.124995389953,33.3166653958957" />
+                  <mssgle:CubicBezierSegment
+                    Point1="115.124995389953,33.3166653958957"
+                    Point2="119.124995389953,33.3166653958957"
+                    Point3="119.124995389953,37.3166653958957" />
+                  <mssgle:LineSegment
+                    End="119.124995389953,59.1333307917913" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Star Based Dataflow.Paths[Sort Output2]"
+          TopLeft="513.249981056899,170.46666226546">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-34.3749983515591,63.6333292420706"
+              Start="0,0"
+              End="-34.3749983515591,56.1333292420706">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,33.7485851436012" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,33.7485851436012"
+                    Point2="0,37.7485851436012"
+                    Point3="-4,37.7485851436012" />
+                  <mssgle:LineSegment
+                    End="-30.3749983515591,37.7485851436012" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-30.3749983515591,37.7485851436012"
+                    Point2="-34.3749983515591,37.7485851436012"
+                    Point3="-34.3749983515591,41.7485851436012" />
+                  <mssgle:LineSegment
+                    End="-34.3749983515591,56.1333292420706" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="108,42.6666666666667"
+          Id="Package\Star Based Dataflow\Sort 3"
+          TopLeft="429.999980777503,304.299988160134" />
+        <EdgeLayout
+          Id="Package\Star Based Dataflow.Paths[Merge Join Output]"
+          TopLeft="456.87498270534,276.766658174197">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="27.1249980721623,27.5333299859366"
+              Start="0,0"
+              End="27.1249980721623,20.0333299859366">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,9.76666499296832" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,9.76666499296832"
+                    Point2="0,13.7666649929683"
+                    Point3="4,13.7666649929683" />
+                  <mssgle:LineSegment
+                    End="23.1249980721623,13.7666649929683" />
+                  <mssgle:CubicBezierSegment
+                    Point1="23.1249980721623,13.7666649929683"
+                    Point2="27.1249980721623,13.7666649929683"
+                    Point3="27.1249980721623,17.7666649929683" />
+                  <mssgle:LineSegment
+                    End="27.1249980721623,20.0333299859366" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Star Based Dataflow.Paths[Sort Output3]"
+          TopLeft="483.999980777503,346.9666548268">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-137.152770206126,44.333326514562"
+              Start="0,0"
+              End="-137.152770206126,36.833326514562">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,22.2798354765357" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,22.2798354765357"
+                    Point2="0,26.2798354765357"
+                    Point3="-4,26.2798354765357" />
+                  <mssgle:LineSegment
+                    End="-133.152770206126,26.2798354765357" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-133.152770206126,26.2798354765357"
+                    Point2="-137.152770206126,26.2798354765357"
+                    Point3="-137.152770206126,30.2798354765357" />
+                  <mssgle:LineSegment
+                    End="-137.152770206126,36.833326514562" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="172,42.6666666666667"
+          Id="Package\Star Based Dataflow\OLE DB Destination"
+          TopLeft="239.374989299104,469.049987075329" />
+        <EdgeLayout
+          Id="Package\Star Based Dataflow.Paths[Merge Join Output1]"
+          TopLeft="325.833322157463,433.966648008029">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,35.0833390673002"
+              Start="0,0"
+              End="0,27.5833390673002">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,27.5833390673002" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Star Based Dataflow\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Star Based Dataflow\OLE DB Source 1">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Star Based Dataflow\OLE DB Source 2">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Star Based Dataflow\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

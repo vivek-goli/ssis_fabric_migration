@@ -39,8 +39,10 @@ def migrate():
         
         workspace_id = get_workspaceid(access_token, workspace_name)
         pipeline_type = parse_ssis(dtsx_file_path)
+        print(pipeline_type)
         pipeline_base64 = ""
         if pipeline_type == "copy":
+            print("Creating a copy pipeline")
             details = parse_plain_dataflow(dtsx_file_path)
             lakehouse_id = get_lakehouseid(access_token, workspace_id, lakehouse_name)
             
@@ -54,6 +56,7 @@ def migrate():
             pipeline_base64 = encode_json_to_base64("json_templates/copydata_template.json")
         
         elif pipeline_type == "copy-procedure":
+            print("Creating a pipeline with copy and procedure")
             details = parse_procedure_dataflow(dtsx_file_path)
             warehouse_id = get_warehouseid(access_token, workspace_id, warehouse_name)
 
@@ -69,6 +72,7 @@ def migrate():
             pipeline_base64 = encode_json_to_base64("json_templates/copydata_procedure_template.json")
         
         elif pipeline_type == "merge-join":
+            print("Creating a Merge Join pipeline")
             query, details = parse_mergejoin_dataflow(dtsx_file_path)
             warehouse_id = get_warehouseid(access_token, workspace_id, warehouse_name)
             lakehouse_id = get_lakehouseid(access_token, workspace_id, lakehouse_name)
@@ -78,6 +82,7 @@ def migrate():
             dest_table = f"{details["destination"]["schema"]}.{details["destination"]["table"]}"
             procedure_name = f"Merge_{details["sources"][0]["table"]}_{details["sources"][1]["table"]}"
             procedure = create_join_procedure(procedure_name, dest_table, query)
+            print("Procedure:\n", procedure)
 
             create_procedure_fabric(endpoint, warehouse_name, procedure)
             create_json_mergejoin(
@@ -92,7 +97,8 @@ def migrate():
             )
             pipeline_base64 = encode_json_to_base64("json_templates/merge_template.json")
         
-        else:
+        elif pipeline_type == "lookup":
+            print("Creating a Lookup pipeline")
             query, details = parse_lookup_dataflow(dtsx_file_path)
             warehouse_id = get_warehouseid(access_token, workspace_id, warehouse_name)
             lakehouse_id = get_lakehouseid(access_token, workspace_id, lakehouse_name)

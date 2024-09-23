@@ -1,0 +1,323 @@
+{
+    "name": "multiple-merges",
+    "objectId": "",
+    "properties": {
+        "activities": [
+            {
+                "name": "CopyActivity1",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "source": {
+                        "type": "",
+                        "queryTimeout": "02:00:00",
+                        "partitionOption": "None",
+                        "datasetSettings": {
+                            "annotations": [],
+                            "type": "",
+                            "schema": [],
+                            "typeProperties": {
+                                "schema": "",
+                                "table": "",
+                                "database": ""
+                            },
+                            "externalReferences": {
+                                "connection": ""
+                            }
+                        }
+                    },
+                    "sink": {
+                        "type": "DataWarehouseSink",
+                        "allowCopyCommand": true,
+                        "tableOption": "autoCreate",
+                        "datasetSettings": {
+                            "annotations": [],
+                            "linkedService": {
+                                "name": "DataMart",
+                                "properties": {
+                                    "annotations": [],
+                                    "type": "DataWarehouse",
+                                    "typeProperties": {
+                                        "endpoint": "7xiyx2ruvtrevnbbnt5c7t7sim-exz2tbz7blrubfknxxc6ew6yxe.datawarehouse.fabric.microsoft.com",
+                                        "artifactId": "",
+                                        "workspaceId": ""
+                                    }
+                                }
+                            },
+                            "type": "DataWarehouseTable",
+                            "schema": [],
+                            "typeProperties": {
+                                "schema": "stage",
+                                "table": "Revenue"
+                            }
+                        }
+                    },
+                    "enableStaging": true,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": true,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                }
+            },
+            {
+                "name": "CopyActivity2",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "source": {
+                        "type": "",
+                        "queryTimeout": "02:00:00",
+                        "partitionOption": "None",
+                        "datasetSettings": {
+                            "annotations": [],
+                            "type": "",
+                            "schema": [],
+                            "typeProperties": {
+                                "schema": "",
+                                "table": "",
+                                "database": ""
+                            },
+                            "externalReferences": {
+                                "connection": ""
+                            }
+                        }
+                    },
+                    "sink": {
+                        "type": "DataWarehouseSink",
+                        "allowCopyCommand": true,
+                        "tableOption": "autoCreate",
+                        "datasetSettings": {
+                            "annotations": [],
+                            "linkedService": {
+                                "name": "DataMart",
+                                "properties": {
+                                    "annotations": [],
+                                    "type": "DataWarehouse",
+                                    "typeProperties": {
+                                        "endpoint": "7xiyx2ruvtrevnbbnt5c7t7sim-exz2tbz7blrubfknxxc6ew6yxe.datawarehouse.fabric.microsoft.com",
+                                        "artifactId": "",
+                                        "workspaceId": ""
+                                    }
+                                }
+                            },
+                            "type": "DataWarehouseTable",
+                            "schema": [],
+                            "typeProperties": {
+                                "schema": "stage",
+                                "table": "Dealer"
+                            }
+                        }
+                    },
+                    "enableStaging": true,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": true,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                }
+            },
+            {
+                "name": "CopyActivity3",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "source": {
+                        "type": "",
+                        "queryTimeout": "02:00:00",
+                        "partitionOption": "None",
+                        "datasetSettings": {
+                            "annotations": [],
+                            "type": "",
+                            "schema": [],
+                            "typeProperties": {
+                                "schema": "",
+                                "table": "",
+                                "database": ""
+                            },
+                            "externalReferences": {
+                                "connection": ""
+                            }
+                        }
+                    },
+                    "sink": {
+                        "type": "DataWarehouseSink",
+                        "allowCopyCommand": true,
+                        "tableOption": "autoCreate",
+                        "datasetSettings": {
+                            "annotations": [],
+                            "linkedService": {
+                                "name": "DataMart",
+                                "properties": {
+                                    "annotations": [],
+                                    "type": "DataWarehouse",
+                                    "typeProperties": {
+                                        "endpoint": "7xiyx2ruvtrevnbbnt5c7t7sim-exz2tbz7blrubfknxxc6ew6yxe.datawarehouse.fabric.microsoft.com",
+                                        "artifactId": "",
+                                        "workspaceId": ""
+                                    }
+                                }
+                            },
+                            "type": "DataWarehouseTable",
+                            "schema": [],
+                            "typeProperties": {
+                                "schema": "stage",
+                                "table": "Country"
+                            }
+                        }
+                    },
+                    "enableStaging": true,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": true,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Wait1",
+                "type": "Wait",
+                "dependsOn": [
+                    {
+                        "activity": "CopyActivity2",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    },
+                    {
+                        "activity": "CopyActivity3",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "typeProperties": {
+                    "waitTimeInSeconds": 120
+                }
+            },
+            {
+                "name": "StoredProcedure1",
+                "type": "SqlServerStoredProcedure",
+                "dependsOn": [
+                    {
+                        "activity": "Wait1",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "storedProcedureName": "Merge_Dealer_Country"
+                },
+                "linkedService": {
+                    "name": "DataMart",
+                    "objectId": "",
+                    "properties": {
+                        "annotations": [],
+                        "type": "DataWarehouse",
+                        "typeProperties": {
+                            "endpoint": "7xiyx2ruvtrevnbbnt5c7t7sim-exz2tbz7blrubfknxxc6ew6yxe.datawarehouse.fabric.microsoft.com",
+                            "artifactId": "",
+                            "workspaceId": ""
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Wait2",
+                "type": "Wait",
+                "dependsOn": [
+                    {
+                        "activity": "CopyActivity1",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    },
+                    {
+                        "activity": "StoredProcedure1",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "typeProperties": {
+                    "waitTimeInSeconds": 120
+                }
+            },
+            {
+                "name": "StoredProcedure2",
+                "type": "SqlServerStoredProcedure",
+                "dependsOn": [
+                    {
+                        "activity": "Wait2",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "storedProcedureName": "Merge_revenue_dealer_merged"
+                },
+                "linkedService": {
+                    "name": "DataMart",
+                    "objectId": "",
+                    "properties": {
+                        "annotations": [],
+                        "type": "DataWarehouse",
+                        "typeProperties": {
+                            "endpoint": "7xiyx2ruvtrevnbbnt5c7t7sim-exz2tbz7blrubfknxxc6ew6yxe.datawarehouse.fabric.microsoft.com",
+                            "artifactId": "",
+                            "workspaceId": ""
+                        }
+                    }
+                }
+            }
+        ],
+        "lastModifiedByObjectId": "",
+        "lastPublishTime": ""
+    }
+}
