@@ -157,7 +157,6 @@ class SSIS_Fabric:
         right_cols, right_sort = SSIS_Fabric.get_input_columns_for_merge(right_inputs)
 
         output_cols = merge.xpath("outputs/output[@name='Merge Join Output']/outputColumns/outputColumn/@name")
-        print(name)
         print("Left:", left_cols, left_sort)
         print("Right:", right_cols, right_sort)
         print("Output:", output_cols)
@@ -180,9 +179,8 @@ class SSIS_Fabric:
         else:
             query += ";"    
         return query
-
-    @staticmethod    
-    def parse_lookup(dataflow, name, table1, columns): # returns the query required to join the two tables and create new table
+  
+    def parse_lookup(self, dataflow, name, table1, columns): # returns the query required to join the two tables and create new table
         lookup = dataflow.xpath(f"//components/component[@name='{name}']")[0]
         lookup_details = lookup.xpath("properties/property[@name='SqlCommand']/text()")
         pattern = r"FROM\s+\[([^\]]+)\]\.\[([^\]]+)\]"
@@ -207,9 +205,14 @@ class SSIS_Fabric:
         component = dataflow.xpath(f"//components/component[@name='{component_name}']")[0]
         if self.component_map[component_name][0] == "Microsoft.Lookup":
             prev_comp = self.dependency_map[component_name][0]
-            self.get_columns_for_lookup(dataflow, prev_comp)
-        else:
-            columns =  component.xpath("outputs/output[contains(@name,'Source Output')]/outputColumns/outputColumn/@name")
+            lookup = dataflow.xpath(f"//components/component[@name='{component_name}']")[0]
+            ref_cols = lookup.xpath("outputs/output/outputColumns/outputColumn/properties/property[@name='CopyFromReferenceColumn']/text()")
+            return self.get_columns_for_lookup(dataflow, prev_comp) + ref_cols
+        elif self.component_map[component_name][0] == "Microsoft.OLEDBSource":
+            columns =  component.xpath("//outputs/output[@name='OLE DB Source Output']/outputColumns/outputColumn/@name")
+            return columns
+        elif self.component_map[component_name][0] == "Microsoft.MergeJoin":
+            columns =  component.xpath("//outputs/output[@name='Merge Join Output']/outputColumns/outputColumn/@name")
             return columns
 
     def copy_activity_json(self, schema, table_name, activity_name): # creates the json for the copy activity from source to stage schema in warehouse
@@ -305,6 +308,14 @@ class SSIS_Fabric:
             file_content = file.read()
             base64_encoded_data = base64.b64encode(file_content)
             base64_string = base64_encoded_data.decode("utf-8")
+        
+        with open("activity_templates/pipeline.json", "r") as file:
+            pipeline = json.load(file)
+        pipeline["name"] = ""
+        pipeline["properties"]["activities"] = []
+        with open(f"activity_templates/pipeline.json", "w") as json_file:
+            json.dump(pipeline, json_file, indent=4)
+                    
         return base64_string
 
     @staticmethod
@@ -385,11 +396,11 @@ class SSIS_Fabric:
                     activity_name = f"CopyActivity{self.counts["copy"]}"
                     if (next_comp_type == "Microsoft.Sort" and self.flows[next_comp_name][0][1] == "Microsoft.MergeJoin") or next_comp_type == "Microsoft.Lookup":
                         table_name = SSIS_Fabric.parse_source_component(dataflow, name) # get source table name
-                        # self.copy_activity_json("stage", table_name, activity_name)
+                        self.copy_activity_json("dbo", table_name, activity_name)
                     elif "Destination" in next_comp_name:
                         table_name = SSIS_Fabric.parse_destination_component(dataflow, next_comp_name)
                         self.copy_activity_json("main", table_name, activity_name)
-                        # self.executables[dataflow_name] += [activity_name]
+                        self.executables[dataflow_name] += [activity_name]
                     self.component_map[name] = self.component_map[name] + [activity_name] # add activity name
                     self.component_map[name][1] = True
                     self.counts["copy"] += 1
@@ -415,16 +426,15 @@ class SSIS_Fabric:
                         else:
                             self.component_map[name] = self.component_map[name] + [f"{t1}_{t2}"] # add output table name to component_map
                             dest_table = f"{t1}_{t2}"
-                        query = query.replace("schema", "stage")
-                        # print(query)
-                        
+                        query = query.replace("schema", "dbo")
+                        #print(query)
                         procedure_name = f"Merge_{dest_table}"
                         procedure = SSIS_Fabric.design_procedure(procedure_name, dest_table, query)
                         print("Procedure: ", procedure)
-                        #self.create_procedure_fabric(procedure)
+                        self.create_procedure_fabric(procedure)
                         activity1 = self.component_map[d1][3]
                         activity2 = self.component_map[d2][3]
-                        # self.procedure_json(procedure_name, activity_name, [activity1, activity2])
+                        self.procedure_json(procedure_name, activity_name, [activity1, activity2])
                         self.component_map[name] += [activity_name]
                         self.component_map[name][1] = True
                         self.counts["procedure"] += 1
@@ -434,10 +444,11 @@ class SSIS_Fabric:
                     if self.component_map[dependency][1] == True:
                         t1 = self.component_map[dependency][2]
                         columns = self.get_columns_for_lookup(dataflow, dependency)
-                        t2, query = SSIS_Fabric.parse_lookup(dataflow, name, t1, columns)
+                        t2, query = self.parse_lookup(dataflow, name, t1, columns)
 
                         copy_name = f"CopyActivity{self.counts["copy"]}"
-                        self.copy_activity_json("stage", t2, copy_name)
+                        self.copy_activity_json("dbo", t2, copy_name)
+                        self.counts["copy"] += 1
                         activity_name = f"StoredProcedure{self.counts["procedure"]}"
                         dest_table = ""
                         if "Destination" in self.flows[name][0][1]:
@@ -446,16 +457,15 @@ class SSIS_Fabric:
                         else:
                             self.component_map[name] = self.component_map[name] + [f"{t1}_{t2}"] # add output table name to component_map
                             dest_table = f"{t1}_{t2}"
-                        query = query.replace("schema", "stage")
-                        print(query)
-                        
+                        query = query.replace("schema", "dbo")
+                        # print(query)
                         procedure_name = f"Lookup_{dest_table}"
                         procedure = SSIS_Fabric.design_procedure(procedure_name, dest_table, query)
-                        # self.create_procedure_fabric(procedure)
+                        self.create_procedure_fabric(procedure)
+                        print("Procedure: ", procedure)
                         activity1 = self.component_map[dependency][3]
                         activity2 = copy_name
-                        # self.procedure_json(procedure_name, activity_name, [activity1, activity2])
-                        self.component_map[name] += [dest_table]
+                        self.procedure_json(procedure_name, activity_name, [activity1, activity2])
                         self.component_map[name] += [activity_name]
                         self.component_map[name][1] = True
                         self.counts["procedure"] += 1

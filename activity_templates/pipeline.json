@@ -1,5 +1,5 @@
 {
-    "name": "multiple-merges",
+    "name": "1-lookups",
     "objectId": "",
     "properties": {
         "activities": [
@@ -46,15 +46,15 @@
                                     "type": "DataWarehouse",
                                     "typeProperties": {
                                         "endpoint": "7xiyx2ruvtrevnbbnt5c7t7sim-exz2tbz7blrubfknxxc6ew6yxe.datawarehouse.fabric.microsoft.com",
-                                        "artifactId": "",
-                                        "workspaceId": ""
+                                        "artifactId": "a9d138a9-d5d8-432f-96e1-0719e94b0c33",
+                                        "workspaceId": "87a9f325-0a3f-40e3-954d-bdc5e25bd8b9"
                                     }
                                 }
                             },
                             "type": "DataWarehouseTable",
                             "schema": [],
                             "typeProperties": {
-                                "schema": "stage",
+                                "schema": "dbo",
                                 "table": "Revenue"
                             }
                         }
@@ -113,16 +113,16 @@
                                     "type": "DataWarehouse",
                                     "typeProperties": {
                                         "endpoint": "7xiyx2ruvtrevnbbnt5c7t7sim-exz2tbz7blrubfknxxc6ew6yxe.datawarehouse.fabric.microsoft.com",
-                                        "artifactId": "",
-                                        "workspaceId": ""
+                                        "artifactId": "a9d138a9-d5d8-432f-96e1-0719e94b0c33",
+                                        "workspaceId": "87a9f325-0a3f-40e3-954d-bdc5e25bd8b9"
                                     }
                                 }
                             },
                             "type": "DataWarehouseTable",
                             "schema": [],
                             "typeProperties": {
-                                "schema": "stage",
-                                "table": "Dealer"
+                                "schema": "dbo",
+                                "table": "Products"
                             }
                         }
                     },
@@ -133,6 +133,62 @@
                         "typeConversionSettings": {
                             "allowDataTruncation": true,
                             "treatBooleanAsNumber": false
+                        }
+                    }
+                }
+            },
+            {
+                "name": "Wait1",
+                "type": "Wait",
+                "dependsOn": [
+                    {
+                        "activity": "CopyActivity1",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    },
+                    {
+                        "activity": "CopyActivity2",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "typeProperties": {
+                    "waitTimeInSeconds": 120
+                }
+            },
+            {
+                "name": "StoredProcedure1",
+                "type": "SqlServerStoredProcedure",
+                "dependsOn": [
+                    {
+                        "activity": "Wait1",
+                        "dependencyConditions": [
+                            "Succeeded"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "typeProperties": {
+                    "storedProcedureName": "Lookup_Revenue_Products"
+                },
+                "linkedService": {
+                    "name": "DataMart",
+                    "objectId": "a9d138a9-d5d8-432f-96e1-0719e94b0c33",
+                    "properties": {
+                        "annotations": [],
+                        "type": "DataWarehouse",
+                        "typeProperties": {
+                            "endpoint": "7xiyx2ruvtrevnbbnt5c7t7sim-exz2tbz7blrubfknxxc6ew6yxe.datawarehouse.fabric.microsoft.com",
+                            "artifactId": "a9d138a9-d5d8-432f-96e1-0719e94b0c33",
+                            "workspaceId": "87a9f325-0a3f-40e3-954d-bdc5e25bd8b9"
                         }
                     }
                 }
@@ -180,16 +236,16 @@
                                     "type": "DataWarehouse",
                                     "typeProperties": {
                                         "endpoint": "7xiyx2ruvtrevnbbnt5c7t7sim-exz2tbz7blrubfknxxc6ew6yxe.datawarehouse.fabric.microsoft.com",
-                                        "artifactId": "",
-                                        "workspaceId": ""
+                                        "artifactId": "a9d138a9-d5d8-432f-96e1-0719e94b0c33",
+                                        "workspaceId": "87a9f325-0a3f-40e3-954d-bdc5e25bd8b9"
                                     }
                                 }
                             },
                             "type": "DataWarehouseTable",
                             "schema": [],
                             "typeProperties": {
-                                "schema": "stage",
-                                "table": "Country"
+                                "schema": "dbo",
+                                "table": "Date"
                             }
                         }
                     },
@@ -205,73 +261,17 @@
                 }
             },
             {
-                "name": "Wait1",
+                "name": "Wait2",
                 "type": "Wait",
                 "dependsOn": [
                     {
-                        "activity": "CopyActivity2",
+                        "activity": "StoredProcedure1",
                         "dependencyConditions": [
                             "Succeeded"
                         ]
                     },
                     {
                         "activity": "CopyActivity3",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "typeProperties": {
-                    "waitTimeInSeconds": 120
-                }
-            },
-            {
-                "name": "StoredProcedure1",
-                "type": "SqlServerStoredProcedure",
-                "dependsOn": [
-                    {
-                        "activity": "Wait1",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    }
-                ],
-                "policy": {
-                    "timeout": "0.12:00:00",
-                    "retry": 0,
-                    "retryIntervalInSeconds": 30,
-                    "secureOutput": false,
-                    "secureInput": false
-                },
-                "typeProperties": {
-                    "storedProcedureName": "Merge_Dealer_Country"
-                },
-                "linkedService": {
-                    "name": "DataMart",
-                    "objectId": "",
-                    "properties": {
-                        "annotations": [],
-                        "type": "DataWarehouse",
-                        "typeProperties": {
-                            "endpoint": "7xiyx2ruvtrevnbbnt5c7t7sim-exz2tbz7blrubfknxxc6ew6yxe.datawarehouse.fabric.microsoft.com",
-                            "artifactId": "",
-                            "workspaceId": ""
-                        }
-                    }
-                }
-            },
-            {
-                "name": "Wait2",
-                "type": "Wait",
-                "dependsOn": [
-                    {
-                        "activity": "CopyActivity1",
-                        "dependencyConditions": [
-                            "Succeeded"
-                        ]
-                    },
-                    {
-                        "activity": "StoredProcedure1",
                         "dependencyConditions": [
                             "Succeeded"
                         ]
@@ -300,18 +300,18 @@
                     "secureInput": false
                 },
                 "typeProperties": {
-                    "storedProcedureName": "Merge_revenue_dealer_merged"
+                    "storedProcedureName": "Lookup_DealerNew"
                 },
                 "linkedService": {
                     "name": "DataMart",
-                    "objectId": "",
+                    "objectId": "a9d138a9-d5d8-432f-96e1-0719e94b0c33",
                     "properties": {
                         "annotations": [],
                         "type": "DataWarehouse",
                         "typeProperties": {
                             "endpoint": "7xiyx2ruvtrevnbbnt5c7t7sim-exz2tbz7blrubfknxxc6ew6yxe.datawarehouse.fabric.microsoft.com",
-                            "artifactId": "",
-                            "workspaceId": ""
+                            "artifactId": "a9d138a9-d5d8-432f-96e1-0719e94b0c33",
+                            "workspaceId": "87a9f325-0a3f-40e3-954d-bdc5e25bd8b9"
                         }
                     }
                 }
