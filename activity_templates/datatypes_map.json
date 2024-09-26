@@ -1,0 +1,22 @@
+{
+    "i1": "TINYINT",                  
+    "i2": "SMALLINT",
+    "i4": "INT",
+    "i8": "BIGINT",
+    "r4": "REAL",
+    "r8": "FLOAT",
+    "wstr": "NVARCHAR",
+    "str": "VARCHAR",
+    "bool": "BIT",
+    "numeric": "DECIMAL",
+    "decimal": "DECIMAL",
+    "dt_date": "DATE",
+    "dt_filetime": "DATETIME",
+    "dt_dbtimestamp": "DATETIME2",
+    "dt_time": "TIME",
+    "dt_guid": "UNIQUEIDENTIFIER",
+    "currency": "MONEY",
+    "bstr": "VARBINARY",
+    "image": "VARBINARY(MAX)",
+    "blob": "VARBINARY(MAX)"
+}

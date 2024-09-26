@@ -57,6 +57,7 @@
         "enableStaging": true,
         "translator": {
             "type": "TabularTranslator",
+            "mappings": [],
             "typeConversion": true,
             "typeConversionSettings": {
                 "allowDataTruncation": true,

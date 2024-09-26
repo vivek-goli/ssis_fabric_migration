@@ -122,9 +122,11 @@ class SSIS_Fabric:
     @staticmethod
     def parse_source_component(dataflow, name): # returns the table name from the source, same name is used as destination in copy acitvity
         component = dataflow.xpath(f"//components/component[@name='{name}']")[0]
+        columns = component.xpath("outputs/output[contains(@name, 'Source Output')]/outputColumns/outputColumn/@name")
+        datatypes = component.xpath("outputs/output[contains(@name, 'Source Output')]/outputColumns/outputColumn/@name")
         source = component.xpath("properties/property[@name='OpenRowset']/text()")[0]
         matches = re.findall(r'\[([^\]]+)\]', source)
-        return matches[1]
+        return matches[1], columns, datatypes
     
     @staticmethod
     def parse_destination_component(dataflow, name): # returns the final destination table name
@@ -215,7 +217,7 @@ class SSIS_Fabric:
             columns =  component.xpath("//outputs/output[@name='Merge Join Output']/outputColumns/outputColumn/@name")
             return columns
 
-    def copy_activity_json(self, schema, table_name, activity_name): # creates the json for the copy activity from source to stage schema in warehouse
+    def copy_activity_json(self, schema, table_name, activity_name, columns): # creates the json for the copy activity from source to stage schema in warehouse
         with open("activity_templates/pipeline.json", "r") as file:
             pipeline = json.load(file)
 
@@ -233,6 +235,11 @@ class SSIS_Fabric:
             "schema": schema,
             "table": table_name
         }
+        mappings = []
+        for col in columns:
+            mappings += [{"source": {"name": col},"sink": {"name": col}}]
+
+        copy["translator"]["mappings"] = mappings
 
         pipeline["properties"]["activities"] += [copy]
         with open(f"activity_templates/pipeline.json", "w") as json_file:
@@ -283,8 +290,18 @@ class SSIS_Fabric:
                         {query}
                     END;
                 """
+    @staticmethod
+    def design_table(table_name, columns, datatypes):
+        with open(f"activity_templates/datatypes_map.json", "r") as file:
+            datatypes_map = json.load(file)
+        query = f"CREATE TABLE {table_name} ({columns[0]} {datatypes_map[datatypes[0]]}"
+        for i in range(1, len(columns)):
+            query += f", {columns[i]} {datatypes_map[datatypes[0]]}"
+        query += ");"
+        print(query)
+        return query
 
-    def create_procedure_fabric(self, sql_query):
+    def create_warehouse_item_fabric(self, sql_query):
         user = "vivek.goli@kanerika.com"
         password = "Vivek@16"
         conn_str = (
@@ -360,7 +377,7 @@ class SSIS_Fabric:
             component_name = component.xpath("@name")[0]
             self.component_map[component_name] = [component_class, False]
             if "Source" in component_class:
-                table = SSIS_Fabric.parse_source_component(dataflow, component_name)
+                table, columns, datatypes = SSIS_Fabric.parse_source_component(dataflow, component_name)
                 self.component_map[component_name] = self.component_map[component_name] + [table]
             self.flows[component_name] = []
             self.dependency_map[component_name] = []
@@ -395,11 +412,16 @@ class SSIS_Fabric:
                     next_comp_name = self.flows[name][0][0]
                     activity_name = f"CopyActivity{self.counts["copy"]}"
                     if (next_comp_type == "Microsoft.Sort" and self.flows[next_comp_name][0][1] == "Microsoft.MergeJoin") or next_comp_type == "Microsoft.Lookup":
-                        table_name = SSIS_Fabric.parse_source_component(dataflow, name) # get source table name
-                        self.copy_activity_json("dbo", table_name, activity_name)
+                        table_name, source_columns, datatypes = SSIS_Fabric.parse_source_component(dataflow, name) # get source table name
+                        query = SSIS_Fabric.design_table(table_name, source_columns, datatypes)
+                        self.create_warehouse_item_fabric(query)
+                        self.copy_activity_json("dbo", table_name, activity_name, source_columns)
                     elif "Destination" in next_comp_name:
+                        table, source_columns, datatypes = SSIS_Fabric.parse_source_component(dataflow, name) # get source table name
                         table_name = SSIS_Fabric.parse_destination_component(dataflow, next_comp_name)
-                        self.copy_activity_json("main", table_name, activity_name)
+                        query = SSIS_Fabric.design_table(table_name, source_columns, datatypes)
+                        self.create_warehouse_item_fabric(query)
+                        self.copy_activity_json("main", table_name, activity_name, source_columns)
                         self.executables[dataflow_name] += [activity_name]
                     self.component_map[name] = self.component_map[name] + [activity_name] # add activity name
                     self.component_map[name][1] = True
@@ -431,7 +453,7 @@ class SSIS_Fabric:
                         procedure_name = f"Merge_{dest_table}"
                         procedure = SSIS_Fabric.design_procedure(procedure_name, dest_table, query)
                         print("Procedure: ", procedure)
-                        self.create_procedure_fabric(procedure)
+                        self.create_warehouse_item_fabric(procedure)
                         activity1 = self.component_map[d1][3]
                         activity2 = self.component_map[d2][3]
                         self.procedure_json(procedure_name, activity_name, [activity1, activity2])
@@ -461,7 +483,7 @@ class SSIS_Fabric:
                         # print(query)
                         procedure_name = f"Lookup_{dest_table}"
                         procedure = SSIS_Fabric.design_procedure(procedure_name, dest_table, query)
-                        self.create_procedure_fabric(procedure)
+                        self.create_warehouse_item_fabric(procedure)
                         print("Procedure: ", procedure)
                         activity1 = self.component_map[dependency][3]
                         activity2 = copy_name
