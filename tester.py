@@ -1,10 +1,11 @@
 from project_modules import SSIS_Fabric
 
-dtsx_file_path = "C:/Users/VenkataVivekGoli/source/repos/SSIS_Sample_Pipelines/Multi-Lookups.dtsx"
+# dtsx_file_path = "C:/Users/VenkataVivekGoli/source/repos/SSIS_Sample_Pipelines/Multi-Lookups.dtsx"
+dtsx_file_path = "C:/Users/VenkataVivekGoli/Downloads/Selected_columns_CopyPipeline.dtsx"
 workspace_name = "Kanerika Full Demo"
 lakehouse_name = "Bronze_Lakehouse"
 warehouse_name = "DataMart"
-pipeline_name = "1-lookups"
+pipeline_name = "copy-selected"
 endpoint = "7xiyx2ruvtrevnbbnt5c7t7sim-exz2tbz7blrubfknxxc6ew6yxe.datawarehouse.fabric.microsoft.com"
 
 obj = SSIS_Fabric(workspace_name, lakehouse_name, warehouse_name, pipeline_name, endpoint)

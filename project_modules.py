@@ -123,7 +123,7 @@ class SSIS_Fabric:
     def parse_source_component(dataflow, name): # returns the table name from the source, same name is used as destination in copy acitvity
         component = dataflow.xpath(f"//components/component[@name='{name}']")[0]
         columns = component.xpath("outputs/output[contains(@name, 'Source Output')]/outputColumns/outputColumn/@name")
-        datatypes = component.xpath("outputs/output[contains(@name, 'Source Output')]/outputColumns/outputColumn/@name")
+        datatypes = component.xpath("outputs/output[contains(@name, 'Source Output')]/outputColumns/outputColumn/@dataType")
         source = component.xpath("properties/property[@name='OpenRowset']/text()")[0]
         matches = re.findall(r'\[([^\]]+)\]', source)
         return matches[1], columns, datatypes
@@ -239,7 +239,7 @@ class SSIS_Fabric:
         for col in columns:
             mappings += [{"source": {"name": col},"sink": {"name": col}}]
 
-        copy["translator"]["mappings"] = mappings
+        copy["typeProperties"]["translator"]["mappings"] = mappings
 
         pipeline["properties"]["activities"] += [copy]
         with open(f"activity_templates/pipeline.json", "w") as json_file:
@@ -292,6 +292,8 @@ class SSIS_Fabric:
                 """
     @staticmethod
     def design_table(table_name, columns, datatypes):
+        print(columns)
+        print(datatypes)
         with open(f"activity_templates/datatypes_map.json", "r") as file:
             datatypes_map = json.load(file)
         query = f"CREATE TABLE {table_name} ({columns[0]} {datatypes_map[datatypes[0]]}"
