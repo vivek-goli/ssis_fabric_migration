@@ -208,7 +208,7 @@ class SSIS_Fabric:
     def get_columns_from_sort(dataflow, sort_name):
         component = dataflow.xpath(f"//components/component[@name='{sort_name}']")[0]
         columns = component.xpath("outputs/output[@name='Sort Output']/outputColumns/outputColumn/@name")
-        datatypes = component.xpath("outputs/output[@name='Sort Output')]/outputColumns/outputColumn/@dataType")
+        datatypes = component.xpath("outputs/output[@name='Sort Output']/outputColumns/outputColumn/@dataType")
         return columns, datatypes
 
     def get_columns_for_lookup(self, dataflow, component_name):
@@ -306,7 +306,7 @@ class SSIS_Fabric:
             datatypes_map = json.load(file)
         query = f"CREATE TABLE {table_name} ({columns[0]} {datatypes_map[datatypes[0]]}"
         for i in range(1, len(columns)):
-            query += f", {columns[i]} {datatypes_map[datatypes[0]]}"
+            query += f", {columns[i]} {datatypes_map[datatypes[i]]}"
         query += ");"
         print(query)
         return query
@@ -542,6 +542,3 @@ class SSIS_Fabric:
         pipeline["name"] = self.pipeline_name
         with open("activity_templates/pipeline.json", "w") as json_file:
             json.dump(pipeline, json_file, indent=4)
-        
-        print(self.component_map)
-        print(self.executables)

@@ -5,7 +5,7 @@
     "i8": "BIGINT",
     "r4": "REAL",
     "r8": "FLOAT",
-    "wstr": "NVARCHAR",
+    "wstr": "VARCHAR",
     "str": "VARCHAR",
     "bool": "BIT",
     "numeric": "DECIMAL(38,2)",
