@@ -192,7 +192,7 @@ class SSIS_Fabric:
 
         join_col1 = lookup.xpath("inputs/input/inputColumns/inputColumn/@cachedName")
         join_col2 = lookup.xpath("inputs/input/inputColumns/inputColumn/properties/property[@name='JoinToReferenceColumn']/text()")
-        ref_cols = lookup.xpath("outputs/output/outputColumns/outputColumn/properties/property[@name='CopyFromReferenceColumn']/text()")
+        ref_cols = lookup.xpath("outputs/output[contains(@name, 'Lookup Match Output')]/outputColumns/outputColumn/properties/property[@name='CopyFromReferenceColumn']/text()")
 
         print(name, columns)
         query = "SELECT "
@@ -201,7 +201,7 @@ class SSIS_Fabric:
         for col in ref_cols:
             query = query + f"t2.{col}, "
         query = query[:-2] + f" FROM schema.{table1} AS t1 JOIN schema.{lookup_table} AS t2 ON t1.{join_col1[0]} = t2.{join_col2[0]}"
-        return lookup_table, query
+        return lookup_table, query, ref_cols
     
     def get_columns_for_lookup(self, dataflow, component_name):
         component = dataflow.xpath(f"//components/component[@name='{component_name}']")[0]
@@ -468,10 +468,10 @@ class SSIS_Fabric:
                     if self.component_map[dependency][1] == True:
                         t1 = self.component_map[dependency][2]
                         columns = self.get_columns_for_lookup(dataflow, dependency)
-                        t2, query = self.parse_lookup(dataflow, name, t1, columns)
+                        t2, query, ref_columns = self.parse_lookup(dataflow, name, t1, columns)
 
                         copy_name = f"CopyActivity{self.counts["copy"]}"
-                        self.copy_activity_json("dbo", t2, copy_name)
+                        self.copy_activity_json("dbo", t2, copy_name, ref_columns)
                         self.counts["copy"] += 1
                         activity_name = f"StoredProcedure{self.counts["procedure"]}"
                         dest_table = ""
