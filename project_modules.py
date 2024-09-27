@@ -133,7 +133,9 @@ class SSIS_Fabric:
         component = dataflow.xpath(f"//components/component[@name='{name}']")[0]
         destination = component.xpath("properties/property[@name='OpenRowset']/text()")[0]
         matches = re.findall(r'\[([^\]]+)\]', destination)
-        return matches[-1]
+        columns = component.xpath("inputs/input[contains(@name, 'Destination Input')]/externalMetadataColumns/externalMetadataColumn/@name")
+        datatypes = component.xpath("inputs/input[contains(@name, 'Destination Input')]/externalMetadataColumns/externalMetadataColumn/@dataType")
+        return matches[-1], columns, datatypes
     
     @staticmethod
     def parse_execsql(execsql, name): # returns the procedure name that is executed in this task
@@ -203,6 +205,12 @@ class SSIS_Fabric:
         query = query[:-2] + f" FROM schema.{table1} AS t1 JOIN schema.{lookup_table} AS t2 ON t1.{join_col1[0]} = t2.{join_col2[0]}"
         return lookup_table, query, ref_cols
     
+    def get_columns_from_sort(dataflow, sort_name):
+        component = dataflow.xpath(f"//components/component[@name='{sort_name}']")[0]
+        columns = component.xpath("outputs/output[@name='Sort Output']/outputColumns/outputColumn/@name")
+        datatypes = component.xpath("outputs/output[@name='Sort Output')]/outputColumns/outputColumn/@dataType")
+        return columns, datatypes
+
     def get_columns_for_lookup(self, dataflow, component_name):
         component = dataflow.xpath(f"//components/component[@name='{component_name}']")[0]
         if self.component_map[component_name][0] == "Microsoft.Lookup":
@@ -413,15 +421,21 @@ class SSIS_Fabric:
                     next_comp_type = self.flows[name][0][1]
                     next_comp_name = self.flows[name][0][0]
                     activity_name = f"CopyActivity{self.counts["copy"]}"
-                    if (next_comp_type == "Microsoft.Sort" and self.flows[next_comp_name][0][1] == "Microsoft.MergeJoin") or next_comp_type == "Microsoft.Lookup":
-                        table_name, source_columns, datatypes = SSIS_Fabric.parse_source_component(dataflow, name) # get source table name
+                    if (next_comp_type == "Microsoft.Sort" and self.flows[next_comp_name][0][1] == "Microsoft.MergeJoin"):
+                        table_name, source_cols, types = SSIS_Fabric.parse_source_component(dataflow, name) # get source table name
+                        source_columns, datatypes = SSIS_Fabric.get_columns_from_sort(dataflow, next_comp_name)
+                        query = SSIS_Fabric.design_table(table_name, source_columns, datatypes)
+                        self.create_warehouse_item_fabric(query)
+                        self.copy_activity_json("dbo", table_name, activity_name, source_columns)
+                    elif next_comp_type == "Microsoft.Lookup":
+                        table_name, source_columns, datatypes = SSIS_Fabric.parse_source_component(dataflow, name)
                         query = SSIS_Fabric.design_table(table_name, source_columns, datatypes)
                         self.create_warehouse_item_fabric(query)
                         self.copy_activity_json("dbo", table_name, activity_name, source_columns)
                     elif "Destination" in next_comp_name:
-                        table, source_columns, datatypes = SSIS_Fabric.parse_source_component(dataflow, name) # get source table name
-                        table_name = SSIS_Fabric.parse_destination_component(dataflow, next_comp_name)
-                        query = SSIS_Fabric.design_table(table_name, source_columns, datatypes)
+                        table, source_columns, types = SSIS_Fabric.parse_source_component(dataflow, name) # get source table name
+                        table_name, dest_columns, datatypes = SSIS_Fabric.parse_destination_component(dataflow, next_comp_name)
+                        query = SSIS_Fabric.design_table(table_name, dest_columns, datatypes)
                         self.create_warehouse_item_fabric(query)
                         self.copy_activity_json("main", table_name, activity_name, source_columns)
                         self.executables[dataflow_name] += [activity_name]
@@ -445,7 +459,7 @@ class SSIS_Fabric:
                         activity_name = f"StoredProcedure{self.counts["procedure"]}"
                         dest_table = ""
                         if "Destination" in self.flows[name][0][1]:
-                            dest_table = SSIS_Fabric.parse_destination_component(dataflow, self.flows[name][0][0])
+                            dest_table, _, _ = SSIS_Fabric.parse_destination_component(dataflow, self.flows[name][0][0])
                             self.executables[dataflow_name] += [activity_name]
                         else:
                             self.component_map[name] = self.component_map[name] + [f"{t1}_{t2}"] # add output table name to component_map
@@ -476,7 +490,7 @@ class SSIS_Fabric:
                         activity_name = f"StoredProcedure{self.counts["procedure"]}"
                         dest_table = ""
                         if "Destination" in self.flows[name][0][1]:
-                            dest_table = SSIS_Fabric.parse_destination_component(dataflow, self.flows[name][0][0])
+                            dest_table, _, _ = SSIS_Fabric.parse_destination_component(dataflow, self.flows[name][0][0])
                             self.executables[dataflow_name] += [activity_name]
                         else:
                             self.component_map[name] = self.component_map[name] + [f"{t1}_{t2}"] # add output table name to component_map
