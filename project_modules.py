@@ -21,10 +21,10 @@ class SSIS_Fabric:
         self.lakehouse = lakehouse
         self.warehouse = warehouse
         self.pipeline_name = pipeline_name
-        self.endpoint = "7xiyx2ruvtrevnbbnt5c7t7sim-exz2tbz7blrubfknxxc6ew6yxe.datawarehouse.fabric.microsoft.com" #warehouse_endpoint
-        self.workspace_id = "87a9f325-0a3f-40e3-954d-bdc5e25bd8b9"
+        self.endpoint = warehouse_endpoint
+        self.workspace_id = "" #"87a9f325-0a3f-40e3-954d-bdc5e25bd8b9"
         self.lakehouse_id = ""
-        self.warehouse_id = "a9d138a9-d5d8-432f-96e1-0719e94b0c33"
+        self.warehouse_id = "" #"a9d138a9-d5d8-432f-96e1-0719e94b0c33"
         self.access_token = ""
         self.component_map = {}
         self.flows = {}
@@ -233,7 +233,7 @@ class SSIS_Fabric:
         if self.component_map[component_name][0] == "Microsoft.Lookup":
             prev_comp = self.dependency_map[component_name][0]
             lookup = dataflow.xpath(f"//components/component[@name='{component_name}']")[0]
-            ref_cols = lookup.xpath("outputs/output/outputColumns/outputColumn/properties/property[@name='CopyFromReferenceColumn']/text()")
+            ref_cols = lookup.xpath("outputs/output[contains(@name, 'Lookup Match Output')]/outputColumns/outputColumn/@name")
             return self.get_columns_for_lookup(dataflow, prev_comp) + ref_cols
         elif self.component_map[component_name][0] == "Microsoft.OLEDBSource":
             columns =  component.xpath("//outputs/output[@name='OLE DB Source Output']/outputColumns/outputColumn/@name")
@@ -344,7 +344,7 @@ class SSIS_Fabric:
             with conn.cursor() as cursor:
                 cursor.execute(sql_query)
                 conn.commit()
-                print("Stored procedure created successfully.")
+                print("Table/Procedure created successfully.")
 
     @staticmethod
     def encode_json_to_base64():
@@ -442,18 +442,18 @@ class SSIS_Fabric:
                         table_name, source_cols, types = SSIS_Fabric.parse_source_component(dataflow, name) # get source table name
                         source_columns, datatypes = SSIS_Fabric.get_columns_from_sort(dataflow, next_comp_name)
                         query = SSIS_Fabric.design_table(table_name, source_columns, datatypes)
-                        # self.create_warehouse_item_fabric(query)
+                        self.create_warehouse_item_fabric(query)
                         self.copy_activity_json("dbo", table_name, activity_name, source_columns)
                     elif next_comp_type == "Microsoft.Lookup":
                         table_name, source_columns, datatypes = SSIS_Fabric.parse_source_component(dataflow, name)
                         query = SSIS_Fabric.design_table(table_name, source_columns, datatypes)
-                        # self.create_warehouse_item_fabric(query)
+                        self.create_warehouse_item_fabric(query)
                         self.copy_activity_json("dbo", table_name, activity_name, source_columns)
                     elif "Destination" in next_comp_name:
                         table, source_columns, types = SSIS_Fabric.parse_source_component(dataflow, name) # get source table name
                         table_name, dest_columns, datatypes = SSIS_Fabric.parse_destination_component(dataflow, next_comp_name)
                         query = SSIS_Fabric.design_table(table_name, dest_columns, datatypes)
-                        # self.create_warehouse_item_fabric(query)
+                        self.create_warehouse_item_fabric(query)
                         self.copy_activity_json("main", table_name, activity_name, dest_columns)
                         self.executables[dataflow_name] += [activity_name]
                     self.component_map[name] = self.component_map[name] + [activity_name] # add activity name
@@ -486,7 +486,7 @@ class SSIS_Fabric:
                         procedure_name = f"Merge_{dest_table}"
                         procedure = SSIS_Fabric.design_procedure(procedure_name, dest_table, query)
                         print("Procedure: ", procedure)
-                        # self.create_warehouse_item_fabric(procedure)
+                        self.create_warehouse_item_fabric(procedure)
                         activity1 = self.component_map[d1][3]
                         activity2 = self.component_map[d2][3]
                         self.procedure_json(procedure_name, activity_name, [activity1, activity2])
@@ -501,7 +501,7 @@ class SSIS_Fabric:
                         columns = self.get_columns_for_lookup(dataflow, dependency)
                         t2, query, ref_columns, datatypes = self.parse_lookup(dataflow, name, t1, columns)
                         table_query = SSIS_Fabric.design_table(t2, ref_columns, datatypes)
-                        # self.create_warehouse_item_fabric(table_query)
+                        self.create_warehouse_item_fabric(table_query)
                         copy_name = f"CopyActivity{self.counts["copy"]}"
                         self.copy_activity_json("dbo", t2, copy_name, ref_columns)
                         self.counts["copy"] += 1
@@ -517,7 +517,7 @@ class SSIS_Fabric:
                         # print(query)
                         procedure_name = f"Lookup_{dest_table}"
                         procedure = SSIS_Fabric.design_procedure(procedure_name, dest_table, query)
-                        # self.create_warehouse_item_fabric(procedure)
+                        self.create_warehouse_item_fabric(procedure)
                         print("Procedure: ", procedure)
                         activity1 = self.component_map[dependency][3]
                         activity2 = copy_name
