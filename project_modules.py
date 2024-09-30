@@ -156,8 +156,13 @@ class SSIS_Fabric:
         key_count = int(merge.xpath("properties/property[@name='NumKeyColumns']/text()")[0])
         join = joins[joinid]
 
-        right_inputs = merge.xpath("inputs/input[@name='Merge Join Right Input']/inputColumns/inputColumn")
-        left_inputs = merge.xpath("inputs/input[@name='Merge Join Left Input']/inputColumns/inputColumn")
+        if joinid == 1:
+            inputs = merge.xpath("inputs/input")
+            left_inputs = inputs[0].xpath("inputColumns/inputColumn")
+            right_inputs = inputs[1].xpath("inputColumns/inputColumn")
+        else:
+            right_inputs = merge.xpath("inputs/input[@name='Merge Join Right Input']/inputColumns/inputColumn")
+            left_inputs = merge.xpath("inputs/input[@name='Merge Join Left Input']/inputColumns/inputColumn")
 
         left_cols, left_sort = SSIS_Fabric.get_input_columns_for_merge(left_inputs)
         right_cols, right_sort = SSIS_Fabric.get_input_columns_for_merge(right_inputs)
@@ -177,7 +182,10 @@ class SSIS_Fabric:
                 query = query + f"t1.{old_col_names[i]} AS {output_cols[i]}, "
             elif old_col_names[i] in right_cols:
                 query = query + f"t2.{old_col_names[i]} AS {output_cols[i]}, "
-        query = query[:-2] + f" FROM schema.{table1} AS t1 {join} schema.{table2} AS t2 ON t1.{left_sort[1]} = t2.{right_sort[1]}"
+        if inputs[0].xpath("@name")[0] == "Merge Join Right Input": # inputs swapped
+            query = query[:-2] + f" FROM schema.{table2} AS t1 {join} schema.{table1} AS t2 ON t1.{right_sort[1]} = t2.{left_sort[1]}"
+        else:
+            query = query[:-2] + f" FROM schema.{table1} AS t1 {join} schema.{table2} AS t2 ON t1.{left_sort[1]} = t2.{right_sort[1]}"
 
         if key_count > 1:
             query = query + " WHERE "
