@@ -1,6 +1,7 @@
 from project_modules import SSIS_Fabric
 
-dtsx_file_path = "C:/Users/VenkataVivekGoli/Downloads/onlyLookupRenameColumn.dtsx"
+# dtsx_file_path = "C:/Users/VenkataVivekGoli/Downloads/onlyLookupRenameColumn.dtsx"
+dtsx_file_path = "C:/Users/VenkataVivekGoli/Downloads/Multiple_LookupMergePipeline.dtsx"
 workspace_name = "Kanerika Full Demo"
 lakehouse_name = "Bronze_Lakehouse"
 warehouse_name = "DataMart"
@@ -16,7 +17,7 @@ obj.get_warehouse_id()
 obj.parse_ssis_pipeline(dtsx_file_path)
 
 encoded = obj.encode_json_to_base64()
-obj.create_payload_json(pipeline_name, encoded)
-with open(f"activity_templates/payload.json", "r") as file:
-    pipeline_payload = file.read()
-obj.create_pipeline(pipeline_payload)
+# obj.create_payload_json(pipeline_name, encoded)
+# with open(f"activity_templates/payload.json", "r") as file:
+#     pipeline_payload = file.read()
+# obj.create_pipeline(pipeline_payload)

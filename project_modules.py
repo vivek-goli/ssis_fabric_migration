@@ -156,6 +156,9 @@ class SSIS_Fabric:
         key_count = int(merge.xpath("properties/property[@name='NumKeyColumns']/text()")[0])
         join = joins[joinid]
 
+        inputs = []
+        left_inputs = []
+        right_inputs = []
         if joinid == 1:
             inputs = merge.xpath("inputs/input")
             left_inputs = inputs[0].xpath("inputColumns/inputColumn")
@@ -348,11 +351,11 @@ class SSIS_Fabric:
             f"PWD={password}"
         )
 
-        with pyodbc.connect(conn_str) as conn:
-            with conn.cursor() as cursor:
-                cursor.execute(sql_query)
-                conn.commit()
-                print("Table/Procedure created successfully.")
+        # with pyodbc.connect(conn_str) as conn:
+        #     with conn.cursor() as cursor:
+        #         cursor.execute(sql_query)
+        #         conn.commit()
+        #         print("Table/Procedure created successfully.")
 
     @staticmethod
     def encode_json_to_base64():
@@ -437,6 +440,7 @@ class SSIS_Fabric:
         completed = []
         while count < len(self.component_map.keys()):
             for name, comp_type in self.component_map.items():
+                print(name)
                 if self.component_map[name][1] == True:
                     if name not in completed:
                         completed = completed + [name]
