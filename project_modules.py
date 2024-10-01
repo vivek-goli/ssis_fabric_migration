@@ -345,11 +345,11 @@ class SSIS_Fabric:
             f"PWD={password}"
         )
 
-        # with pyodbc.connect(conn_str) as conn:
-        #     with conn.cursor() as cursor:
-        #         cursor.execute(sql_query)
-        #         conn.commit()
-        #         print("Table/Procedure created successfully.")
+        with pyodbc.connect(conn_str) as conn:
+            with conn.cursor() as cursor:
+                cursor.execute(sql_query)
+                conn.commit()
+                print("Table/Procedure created successfully.")
 
     @staticmethod
     def encode_json_to_base64():
