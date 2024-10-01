@@ -156,17 +156,11 @@ class SSIS_Fabric:
         key_count = int(merge.xpath("properties/property[@name='NumKeyColumns']/text()")[0])
         join = joins[joinid]
 
-        inputs = []
-        left_inputs = []
-        right_inputs = []
-        if joinid == 1:
-            inputs = merge.xpath("inputs/input")
-            left_inputs = inputs[0].xpath("inputColumns/inputColumn")
-            right_inputs = inputs[1].xpath("inputColumns/inputColumn")
-        else:
-            right_inputs = merge.xpath("inputs/input[@name='Merge Join Right Input']/inputColumns/inputColumn")
-            left_inputs = merge.xpath("inputs/input[@name='Merge Join Left Input']/inputColumns/inputColumn")
-
+        inputs = merge.xpath("inputs/input")
+        print(inputs)
+        left_inputs = inputs[0].xpath("inputColumns/inputColumn")
+        right_inputs = inputs[1].xpath("inputColumns/inputColumn")
+        
         left_cols, left_sort = SSIS_Fabric.get_input_columns_for_merge(left_inputs)
         right_cols, right_sort = SSIS_Fabric.get_input_columns_for_merge(right_inputs)
 
@@ -440,7 +434,6 @@ class SSIS_Fabric:
         completed = []
         while count < len(self.component_map.keys()):
             for name, comp_type in self.component_map.items():
-                print(name)
                 if self.component_map[name][1] == True:
                     if name not in completed:
                         completed = completed + [name]
