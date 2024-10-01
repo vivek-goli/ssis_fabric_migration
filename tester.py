@@ -1,6 +1,6 @@
 from project_modules import SSIS_Fabric
 
-dtsx_file_path = "C:/Users/VenkataVivekGoli/source/repos/SSIS_Sample_Pipelines/Merge-Lookup.dtsx"
+dtsx_file_path = "C:/Users/VenkataVivekGoli/Downloads/onlyLookupRenameColumn.dtsx"
 workspace_name = "Kanerika Full Demo"
 lakehouse_name = "Bronze_Lakehouse"
 warehouse_name = "DataMart"

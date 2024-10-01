@@ -10,6 +10,7 @@
     "bool": "BIT",
     "numeric": "DECIMAL(38,2)",
     "decimal": "DECIMAL(38,2)",
+    "dbDate": "DATE",
     "dt_date": "DATE",
     "dt_filetime": "DATETIME",
     "dt_dbtimestamp": "DATETIME2",
