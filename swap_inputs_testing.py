@@ -72,9 +72,13 @@ def parse_merge(dataflow, name, table1, table2): # returns the query required to
         query += ";"    
     print(query)
 
-filepath = "C:/Users/VenkataVivekGoli/source/repos/SSIS_Sample_Pipelines/Merge-Lookup.dtsx"
+filepath = "C:/Users/VenkataVivekGoli/Downloads/Multiple_LookupMergePipeline.dtsx"
 tree = etree.parse(filepath)
 namespaces = {'DTS': 'www.microsoft.com/SqlServer/Dts', 'SQLTask': 'www.microsoft.com/sqlserver/dts/tasks/sqltask'}
-pipeline_executables = tree.xpath("//DTS:Executables/DTS:Executable", namespaces=namespaces)[0]
+pipeline_executable = tree.xpath("//DTS:Executables/DTS:Executable", namespaces=namespaces)[0]
 
-parse_merge(pipeline_executables, "Merge Join", "APurchases", "AProducts")
+# parse_merge(pipeline_executable, "Merge Join", "APurchases", "AProducts")
+
+source = pipeline_executable.xpath("DTS:ObjectData/pipeline/components/component[@name='SalesTran']", namespaces=namespaces)[0]
+columns = source.xpath("outputs/output[contains(@name, 'Source Output')]/outputColumns/outputColumn/@name")
+print(columns)

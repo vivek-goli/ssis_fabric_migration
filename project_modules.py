@@ -14,6 +14,7 @@ class SSIS_Fabric:
     authority = f"https://login.microsoftonline.com/{tenant_id}"
     username = "vivek.goli@kanerika.com"
     password = "Vivek@16"
+    namespaces = {'DTS': 'www.microsoft.com/SqlServer/Dts', 'SQLTask': 'www.microsoft.com/sqlserver/dts/tasks/sqltask'}
 
     #initialize the instance variables
     def __init__(self, workspace, lakehouse, warehouse, pipeline_name, warehouse_endpoint):
@@ -121,7 +122,7 @@ class SSIS_Fabric:
 
     @staticmethod
     def parse_source_component(dataflow, name): # returns the table name from the source, same name is used as destination in copy acitvity
-        component = dataflow.xpath(f"//components/component[@name='{name}']")[0]
+        component = dataflow.xpath(f"DTS:ObjectData/pipeline/components/component[@name='{name}']", namespaces=SSIS_Fabric.namespaces)[0]
         columns = component.xpath("outputs/output[contains(@name, 'Source Output')]/outputColumns/outputColumn/@name")
         datatypes = component.xpath("outputs/output[contains(@name, 'Source Output')]/outputColumns/outputColumn/@dataType")
         source = component.xpath("properties/property[@name='OpenRowset']/text()")[0]
@@ -132,7 +133,7 @@ class SSIS_Fabric:
     
     @staticmethod
     def parse_destination_component(dataflow, name): # returns the final destination table name
-        component = dataflow.xpath(f"//components/component[@name='{name}']")[0]
+        component = dataflow.xpath(f"DTS:ObjectData/pipeline/components/component[@name='{name}']", namespaces=SSIS_Fabric.namespaces)[0]
         destination = component.xpath("properties/property[@name='OpenRowset']/text()")[0]
         matches = re.findall(r'\[([^\]]+)\]', destination)
         columns = component.xpath("inputs/input[contains(@name, 'Destination Input')]/externalMetadataColumns/externalMetadataColumn/@name")
@@ -148,9 +149,9 @@ class SSIS_Fabric:
 
     @staticmethod
     def parse_merge(dataflow, name, table1, table2): # returns the query required to join the two tables and create new table
-        merge = dataflow.xpath(f"//components/component[@name='{name}']")[0]
+        merge = dataflow.xpath(f"DTS:ObjectData/pipeline/components/component[@name='{name}']", namespaces=SSIS_Fabric.namespaces)[0]
         print(merge.xpath("@name")[0])
-        joins = {0:"OUTER JOIN", 1:"LEFT JOIN", 2:"INNER JOIN"}
+        joins = {0:"FULL OUTER JOIN", 1:"LEFT OUTER JOIN", 2:"INNER JOIN"}
         namespaces = {'DTS': 'www.microsoft.com/SqlServer/Dts'}
         joinid = int(merge.xpath("properties/property[@name='JoinType']/text()")[0])
         key_count = int(merge.xpath("properties/property[@name='NumKeyColumns']/text()")[0])
@@ -197,7 +198,7 @@ class SSIS_Fabric:
         return query
   
     def parse_lookup(self, dataflow, name, table1, columns): # returns the query required to join the two tables and create new table
-        lookup = dataflow.xpath(f"//components/component[@name='{name}']")[0]
+        lookup = dataflow.xpath(f"DTS:ObjectData/pipeline/components/component[@name='{name}']", namespaces=SSIS_Fabric.namespaces)[0]
         lookup_details = lookup.xpath("properties/property[@name='SqlCommand']/text()")
         pattern = r"FROM\s+\[([^\]]+)\]\.\[([^\]]+)\]"
         match = re.search(pattern, lookup_details[0], re.IGNORECASE)
@@ -234,17 +235,19 @@ class SSIS_Fabric:
         return columns, datatypes
 
     def get_columns_for_lookup(self, dataflow, component_name):
-        component = dataflow.xpath(f"//components/component[@name='{component_name}']")[0]
+        print("Get columns for lookup:", component_name)
+        component = dataflow.xpath(f"DTS:ObjectData/pipeline/components/component[@name='{component_name}']", namespaces=SSIS_Fabric.namespaces)[0]
         if self.component_map[component_name][0] == "Microsoft.Lookup":
             prev_comp = self.dependency_map[component_name][0]
-            lookup = dataflow.xpath(f"//components/component[@name='{component_name}']")[0]
+            lookup = dataflow.xpath(f"DTS:ObjectData/pipeline/components/component[@name='{component_name}']", namespaces=SSIS_Fabric.namespaces)[0]
             ref_cols = lookup.xpath("outputs/output[contains(@name, 'Lookup Match Output')]/outputColumns/outputColumn/@name")
             return self.get_columns_for_lookup(dataflow, prev_comp) + ref_cols
         elif self.component_map[component_name][0] == "Microsoft.OLEDBSource":
-            columns =  component.xpath("//outputs/output[@name='OLE DB Source Output']/outputColumns/outputColumn/@name")
+            columns =  component.xpath("outputs/output[contains(@name, 'Source Output')]/outputColumns/outputColumn/@name")
+            print(component_name, columns)
             return columns
         elif self.component_map[component_name][0] == "Microsoft.MergeJoin":
-            columns =  component.xpath("//outputs/output[@name='Merge Join Output']/outputColumns/outputColumn/@name")
+            columns =  component.xpath("outputs/output[@name='Merge Join Output']/outputColumns/outputColumn/@name")
             return columns
 
     def copy_activity_json(self, schema, table_name, activity_name, columns): # creates the json for the copy activity from source to stage schema in warehouse
@@ -403,7 +406,7 @@ class SSIS_Fabric:
         namespaces = {'DTS': 'www.microsoft.com/SqlServer/Dts', 'SQLTask': 'www.microsoft.com/sqlserver/dts/tasks/sqltask'}
         task_name = dataflow.xpath("@DTS:ObjectName", namespaces=namespaces)[0]
         print(f"Data Flow Task: {task_name}")
-        components = dataflow.xpath(f"//components/component")
+        components = dataflow.xpath(f"DTS:ObjectData/pipeline/components/component", namespaces=namespaces)
         for component in components:
             component_class = component.xpath("@componentClassID")[0]
             component_name = component.xpath("@name")[0]
@@ -415,7 +418,7 @@ class SSIS_Fabric:
             self.dependency_map[component_name] = []
         print("\nComponent map: ", self.component_map)
 
-        data_paths = dataflow.xpath("//paths/path")
+        data_paths = dataflow.xpath("DTS:ObjectData/pipeline/paths/path", namespaces=namespaces)
         for path in data_paths:
             source_id = path.xpath("@startId")[0]
             destination_id = path.xpath("@endId")[0]
