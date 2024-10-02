@@ -33,12 +33,26 @@ class SSIS_Fabric:
         self.executables = {}
         self.counts = {"copy":1, "procedure":1, "wait":1}
     
+    # def create_token(self):
+    #     # Acquire a token for Fabric APIs
+    #     app = msal.PublicClientApplication(self.client_id, authority=self.authority)
+    #     username = self.username
+    #     password = self.password
+    #     result = app.acquire_token_by_username_password(username=username, password=password, scopes=self.scope)
+
+    #     if "access_token" in result:
+    #         self.access_token = result["access_token"]
+    #         print("Access token acquired")
+    #         return self.access_token
+    #     else:
+    #         raise ValueError("Failed to acquire token. Err: %s" % result)
+
     def create_token(self):
         # Acquire a token for Fabric APIs
         app = msal.PublicClientApplication(self.client_id, authority=self.authority)
         username = self.username
         password = self.password
-        result = app.acquire_token_by_username_password(username=username, password=password, scopes=self.scope)
+        result = app.acquire_token_interactive(scopes=self.scope)
 
         if "access_token" in result:
             self.access_token = result["access_token"]
@@ -180,8 +194,9 @@ class SSIS_Fabric:
                 query = query + f"t1.{old_col_names[i]} AS {output_cols[i]}, "
             elif old_col_names[i] in right_cols:
                 query = query + f"t2.{old_col_names[i]} AS {output_cols[i]}, "
+        
         if inputs[0].xpath("@name")[0] == "Merge Join Right Input": # inputs swapped
-            query = query[:-2] + f" FROM schema.{table2} AS t1 {join} schema.{table1} AS t2 ON t1.{right_sort[1]} = t2.{left_sort[1]}"
+            query = query[:-2] + f" FROM schema.{table2} AS t1 {join} schema.{table1} AS t2 ON t1.{left_sort[1]} = t2.{right_sort[1]}"
         else:
             query = query[:-2] + f" FROM schema.{table1} AS t1 {join} schema.{table2} AS t2 ON t1.{left_sort[1]} = t2.{right_sort[1]}"
 
@@ -194,7 +209,7 @@ class SSIS_Fabric:
                     query = query + f" t1.{left_sort[i]} = t2.{right_sort[i]}"
             query += ";"
         else:
-            query += ";"    
+            query += ";"   
         return query
   
     def parse_lookup(self, dataflow, name, table1, columns): # returns the query required to join the two tables and create new table
@@ -231,7 +246,6 @@ class SSIS_Fabric:
         component = dataflow.xpath(f"//components/component[@name='{sort_name}']")[0]
         columns = component.xpath("outputs/output[@name='Sort Output']/outputColumns/outputColumn/@name")
         datatypes = component.xpath("outputs/output[@name='Sort Output']/outputColumns/outputColumn/@dataType")
-        print(columns, datatypes)
         return columns, datatypes
 
     def get_columns_for_lookup(self, dataflow, component_name):
@@ -336,16 +350,30 @@ class SSIS_Fabric:
         print(query)
         return query
 
+    # def create_warehouse_item_fabric(self, sql_query):
+    #     user = "vivek.goli@kanerika.com"
+    #     password = "Vivek@16"
+    #     conn_str = (
+    #         "DRIVER={ODBC Driver 17 for SQL Server};"
+    #         f"SERVER={self.endpoint};"
+    #         f"DATABASE={self.warehouse};"
+    #         "Authentication=ActiveDirectoryPassword;"
+    #         f"UID={user};"
+    #         f"PWD={password}"
+    #     )
+
+    #     with pyodbc.connect(conn_str) as conn:
+    #         with conn.cursor() as cursor:
+    #             cursor.execute(sql_query)
+    #             conn.commit()
+    #             print("Table/Procedure created successfully.")
+
     def create_warehouse_item_fabric(self, sql_query):
-        user = "vivek.goli@kanerika.com"
-        password = "Vivek@16"
         conn_str = (
             "DRIVER={ODBC Driver 17 for SQL Server};"
             f"SERVER={self.endpoint};"
             f"DATABASE={self.warehouse};"
-            "Authentication=ActiveDirectoryPassword;"
-            f"UID={user};"
-            f"PWD={password}"
+            "Authentication=ActiveDirectoryInteractive;"  # Interactive MFA authentication
         )
 
         with pyodbc.connect(conn_str) as conn:
@@ -353,6 +381,7 @@ class SSIS_Fabric:
                 cursor.execute(sql_query)
                 conn.commit()
                 print("Table/Procedure created successfully.")
+
 
     @staticmethod
     def encode_json_to_base64():
@@ -367,7 +396,6 @@ class SSIS_Fabric:
         pipeline["properties"]["activities"] = []
         with open(f"activity_templates/pipeline.json", "w") as json_file:
             json.dump(pipeline, json_file, indent=4)
-                    
         return base64_string
 
     @staticmethod
@@ -460,7 +488,7 @@ class SSIS_Fabric:
                     elif "Destination" in next_comp_name:
                         table, source_columns, types = SSIS_Fabric.parse_source_component(dataflow, name) # get source table name
                         table_name, dest_columns, datatypes = SSIS_Fabric.parse_destination_component(dataflow, next_comp_name)
-                        query = SSIS_Fabric.design_table(table_name, dest_columns, datatypes)
+                        query = SSIS_Fabric.design_table(table_name, dest_columns, types)
                         self.create_warehouse_item_fabric(query)
                         self.copy_activity_json("main", table_name, activity_name, dest_columns)
                         self.executables[dataflow_name] += [activity_name]
@@ -538,6 +566,7 @@ class SSIS_Fabric:
                     if self.component_map[self.dependency_map[name][0]][1] == True:
                         self.component_map[name][1] = True
                 print(f"{name}: {self.component_map[name][1]}")
+        print(self.component_map)
 
     #driving function 1
     def parse_ssis_pipeline(self, filepath):

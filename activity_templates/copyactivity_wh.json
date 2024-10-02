@@ -31,7 +31,6 @@
         "sink": {
             "type": "DataWarehouseSink",
             "allowCopyCommand": true,
-            "tableOption": "autoCreate",
             "datasetSettings": {
                 "annotations": [],
                 "linkedService": {
