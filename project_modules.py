@@ -461,7 +461,7 @@ class SSIS_Fabric:
                         table_name, dest_columns, datatypes = SSIS_Fabric.parse_destination_component(dataflow, next_comp_name)
                         query = SSIS_Fabric.design_table(table_name, dest_columns, types)
                         self.create_warehouse_item_fabric(query)
-                        self.copy_activity_json("main", table_name, activity_name, dest_columns)
+                        self.copy_activity_json("dbo", table_name, activity_name, dest_columns)
                         self.executables[dataflow_name] += [activity_name]
                     self.component_map[name] = self.component_map[name] + [activity_name] # add activity name
                     self.component_map[name][1] = True

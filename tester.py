@@ -1,12 +1,12 @@
 from project_modules import SSIS_Fabric
 
 # dtsx_file_path = "C:/Users/VenkataVivekGoli/Downloads/onlyLookupRenameColumn.dtsx"
-dtsx_file_path = "C:/Users/VenkataVivekGoli/source/repos/SSIS_Sample_Pipelines/.dtsx"
+dtsx_file_path = r"C:\Users\VenkataVivekGoli\Downloads\Merge_swap_rename_col.dtsx"
 workspace_name = "Kanerika Full Demo"
 lakehouse_name = "Bronze_Lakehouse"
 warehouse_name = "DataStore"
-pipeline_name = ""
-endpoint = "7xiyx2ruvtrevnbbnt5c7t7sim-exz2tbz7blrubfknxxc6ew6yxe.datawarehouse.fabric.microsoft.com"
+pipeline_name = "Target_onlyMergeSameReColumn2"
+endpoint = "7xiyx2ruvtrevnbbnt5c7t7sim-exz2tbz7blrubfknxxc6ew6yxe.datawarehouse.fabric.microsoft.com" #"7xiyx2ruvtrevnbbnt5c7t7sim-exz2tbz7blrubfknxxc6ew6yxe.datawarehouse.fabric.microsoft.com"
 
 obj = SSIS_Fabric(workspace_name, lakehouse_name, warehouse_name, pipeline_name, endpoint)
 obj.create_token()
