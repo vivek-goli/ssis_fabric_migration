@@ -1,11 +1,11 @@
 from project_modules import SSIS_Fabric
 
 # dtsx_file_path = "C:/Users/VenkataVivekGoli/Downloads/onlyLookupRenameColumn.dtsx"
-dtsx_file_path = "C:/Users/VenkataVivekGoli/source/repos/SSIS_Sample_Pipelines/Multiple-Merge-Renamed.dtsx"
+dtsx_file_path = "C:/Users/VenkataVivekGoli/source/repos/SSIS_Sample_Pipelines/Multiple-Dataflows.dtsx"
 workspace_name = "Kanerika Full Demo"
 lakehouse_name = "Bronze_Lakehouse"
-warehouse_name = "DataMart"
-pipeline_name = "Multiple-Merges-ColsRenamed"
+warehouse_name = "DataStore"
+pipeline_name = "1-dataflows"
 endpoint = "7xiyx2ruvtrevnbbnt5c7t7sim-exz2tbz7blrubfknxxc6ew6yxe.datawarehouse.fabric.microsoft.com"
 
 obj = SSIS_Fabric(workspace_name, lakehouse_name, warehouse_name, pipeline_name, endpoint)

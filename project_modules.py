@@ -33,26 +33,12 @@ class SSIS_Fabric:
         self.executables = {}
         self.counts = {"copy":1, "procedure":1, "wait":1}
     
-    # def create_token(self):
-    #     # Acquire a token for Fabric APIs
-    #     app = msal.PublicClientApplication(self.client_id, authority=self.authority)
-    #     username = self.username
-    #     password = self.password
-    #     result = app.acquire_token_by_username_password(username=username, password=password, scopes=self.scope)
-
-    #     if "access_token" in result:
-    #         self.access_token = result["access_token"]
-    #         print("Access token acquired")
-    #         return self.access_token
-    #     else:
-    #         raise ValueError("Failed to acquire token. Err: %s" % result)
-
     def create_token(self):
         # Acquire a token for Fabric APIs
         app = msal.PublicClientApplication(self.client_id, authority=self.authority)
         username = self.username
         password = self.password
-        result = app.acquire_token_interactive(scopes=self.scope)
+        result = app.acquire_token_by_username_password(username=username, password=password, scopes=self.scope)
 
         if "access_token" in result:
             self.access_token = result["access_token"]
@@ -227,6 +213,7 @@ class SSIS_Fabric:
         ref_cols = lookup.xpath("outputs/output[contains(@name, 'Lookup Match Output')]/outputColumns/outputColumn/@name")
         datatypes = lookup.xpath("outputs/output[contains(@name, 'Lookup Match Output')]/outputColumns/outputColumn/@dataType")
         print(name, columns)
+
         query = "SELECT "
         for col in columns:
             query = query + f"t1.{col}, "
@@ -350,30 +337,16 @@ class SSIS_Fabric:
         print(query)
         return query
 
-    # def create_warehouse_item_fabric(self, sql_query):
-    #     user = "vivek.goli@kanerika.com"
-    #     password = "Vivek@16"
-    #     conn_str = (
-    #         "DRIVER={ODBC Driver 17 for SQL Server};"
-    #         f"SERVER={self.endpoint};"
-    #         f"DATABASE={self.warehouse};"
-    #         "Authentication=ActiveDirectoryPassword;"
-    #         f"UID={user};"
-    #         f"PWD={password}"
-    #     )
-
-    #     with pyodbc.connect(conn_str) as conn:
-    #         with conn.cursor() as cursor:
-    #             cursor.execute(sql_query)
-    #             conn.commit()
-    #             print("Table/Procedure created successfully.")
-
     def create_warehouse_item_fabric(self, sql_query):
+        user = "vivek.goli@kanerika.com"
+        password = "Vivek@16"
         conn_str = (
             "DRIVER={ODBC Driver 17 for SQL Server};"
             f"SERVER={self.endpoint};"
             f"DATABASE={self.warehouse};"
-            "Authentication=ActiveDirectoryInteractive;"  # Interactive MFA authentication
+            "Authentication=ActiveDirectoryPassword;"
+            f"UID={user};"
+            f"PWD={password}"
         )
 
         with pyodbc.connect(conn_str) as conn:
@@ -381,7 +354,6 @@ class SSIS_Fabric:
                 cursor.execute(sql_query)
                 conn.commit()
                 print("Table/Procedure created successfully.")
-
 
     @staticmethod
     def encode_json_to_base64():
@@ -430,11 +402,10 @@ class SSIS_Fabric:
             print(f"Failed to create pipeline. Status code: {response.status_code}")
             print(response.json())
 
-    def parse_dataflow(self, dataflow, name):    
-        namespaces = {'DTS': 'www.microsoft.com/SqlServer/Dts', 'SQLTask': 'www.microsoft.com/sqlserver/dts/tasks/sqltask'}
-        task_name = dataflow.xpath("@DTS:ObjectName", namespaces=namespaces)[0]
+    def parse_dataflow(self, dataflow, name):
+        task_name = dataflow.xpath("@DTS:ObjectName", namespaces=SSIS_Fabric.namespaces)[0]
         print(f"Data Flow Task: {task_name}")
-        components = dataflow.xpath(f"DTS:ObjectData/pipeline/components/component", namespaces=namespaces)
+        components = dataflow.xpath(f"DTS:ObjectData/pipeline/components/component", namespaces=SSIS_Fabric.namespaces)
         for component in components:
             component_class = component.xpath("@componentClassID")[0]
             component_name = component.xpath("@name")[0]
@@ -446,7 +417,7 @@ class SSIS_Fabric:
             self.dependency_map[component_name] = []
         print("\nComponent map: ", self.component_map)
 
-        data_paths = dataflow.xpath("DTS:ObjectData/pipeline/paths/path", namespaces=namespaces)
+        data_paths = dataflow.xpath("DTS:ObjectData/pipeline/paths/path", namespaces=SSIS_Fabric.namespaces)
         for path in data_paths:
             source_id = path.xpath("@startId")[0]
             destination_id = path.xpath("@endId")[0]
@@ -567,6 +538,9 @@ class SSIS_Fabric:
                         self.component_map[name][1] = True
                 print(f"{name}: {self.component_map[name][1]}")
         print(self.component_map)
+        self.component_map = {}
+        self.dependency_map = {}
+        self.flows = {}
 
     #driving function 1
     def parse_ssis_pipeline(self, filepath):
@@ -579,7 +553,7 @@ class SSIS_Fabric:
         for i in range(n):
             exec_type = pipeline_executables[i].xpath("@DTS:ExecutableType", namespaces=namespaces)[0]
             name = pipeline_executables[i].xpath("@DTS:ObjectName", namespaces=namespaces)[0]
-            # print(exec_type, name)
+            print("\n", exec_type, name)
             self.executables[name] = []
             if exec_type == "Microsoft.Pipeline":
                 self.parse_dataflow(pipeline_executables[i], name)
